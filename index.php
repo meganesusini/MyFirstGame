@@ -17,9 +17,11 @@
     </ul>
     <h3>FIRST ROUND</h3>
     <p>GUESS A NUMBER</p>
-    <input type="text" name="" id="">
-    <button>Enter</button>
-    <span id="clue"></span> <!-- says "more" or "less" -->
+    <form method="post" action="functions.php">
+    <input type="text" name="text" id="text">
+    <input type="submit" value="Enter">
+    </form>
+    <span id="clue"><?php if (1==1) echo 'hello';?></span> <!-- says "more" or "less" -->
     <p id="found-nb"></p> <!-- sentence which says the number is found -->
 </body>
 </html>
