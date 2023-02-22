@@ -20,13 +20,19 @@
     <p>The number to guess is between 0 and 100 included</p>
     <?php
     include 'functions.php';
-    $theNbToFind = generateNb();
-    echo $theNbToFind; // WARNING : THE NB CHANGE ALL THE TIME
+    session_start();
+
+    if (!isset($_SESSION['theNbToFind'])) {
+        // If the session variable doesn't exist, generate a new nb to guess et store it in the session variable
+        $_SESSION['theNbToFind'] = generateNb();
+    }
+
+    echo "The number to guess is: ".$_SESSION['theNbToFind'];
     echo '<form method="post" action="">';
     echo '<input type="text" autofocus name="text" id="text">';
     echo '<input type="submit" value="Enter">';
     echo '<span id="clue">';
-    if (!empty($_POST["text"])) echo findTheNb($_POST["text"], $theNbToFind);
+    if (!empty($_POST["text"])) echo findTheNb($_POST["text"], $_SESSION['theNbToFind']);
     echo '</span>'; //says "more" or "less"
     ?>
     </form>
