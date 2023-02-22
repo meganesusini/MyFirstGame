@@ -17,11 +17,20 @@
     </ul>
     <h3>FIRST ROUND</h3>
     <p>GUESS A NUMBER</p>
-    <form method="post" action="functions.php">
-    <input type="text" name="text" id="text">
-    <input type="submit" value="Enter">
+    <p>The number to guess is between 0 and 100 included</p>
+    <?php
+    include 'functions.php';
+    $theNbToFind = generateNb();
+    echo $theNbToFind; // WARNING : THE NB CHANGE ALL THE TIME
+    echo '<form method="post" action="">';
+    echo '<input type="text" autofocus name="text" id="text">';
+    echo '<input type="submit" value="Enter">';
+    echo '<span id="clue">';
+    if (!empty($_POST["text"])) echo findTheNb($_POST["text"], $theNbToFind);
+    echo '</span>'; //says "more" or "less"
+    ?>
     </form>
-    <span id="clue"><?php if (1==1) echo 'hello';?></span> <!-- says "more" or "less" -->
-    <p id="found-nb"></p> <!-- sentence which says the number is found -->
+     
+    <!-- <p id="found-nb"></p> sentence which says the number is found -->
 </body>
 </html>
