@@ -8,7 +8,7 @@ function findTheNb($userNb, $nbToFind)
 {
     if ($userNb == $nbToFind) 
     {
-        return "You are right ! The number is " . $nbToFind;
+        return "You are right ! The number is ".$nbToFind;
     }
     else if ($userNb > $nbToFind)
     {
