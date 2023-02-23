@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 if (!isset($_SESSION['wordsYouFoundArray'])) {
     // If the session variable doesn't exist, generate a new empty array
     $_SESSION['wordsYouFoundArray'] = [];
@@ -13,7 +12,6 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Game</title>
-
     <style>
         table, td {
         border: 1px solid;
@@ -23,7 +21,7 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
             width:80px;
         }
 
-        #timeUp, #wordsToFind {
+        #timeUp, #p-wordsToFind {
             display:none;
         }
     </style>
@@ -36,27 +34,37 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
         $seconds = 10;
         echo '<p>You have '.$seconds.' seconds to memorize all the words you can.</p>';
     ?>
+
     <div id="ready">
         <p>Are you ready ? Press the button !</p>
-        <button onclick="displayAll();">Ready</button>
-        <span id="timer"></span>
-        <table id="tableId"></table>
+        <button onclick="readyButton();">Ready</button> <!-- displays the timer and the array with the words to memorize -->
+        <span id="timer"></span> <!-- timer -->
+        <table id="tableId"></table> <!-- array with the words to memorize -->
     </div>
+
     <div id="timeUp">
         <p>Time up! Write all the words you have memorized.</p>
         <p>Write each word, one by one.</p>
-        <input type="text" id="word-found">
-        <button onclick="displayAWordFound();">Submit</button>
-        <p id="aWordFound"></p>
-        <table id="userTable"></table>
+        <input type="text" id="input-user-word"> <!-- input > user write a word -->
+        <button onclick="displayUserWords();">Submit</button> <!-- button which displays each word written by the user -->
+        <p id="display-user-word"></p> <!-- displays a word -->
+        <table id="userTable"></table> <!-- displays all the words wrote by the user -->
+
         <p>If you have finished, press the Terminate button.</p>
-        <button onclick="displayTable('originalTable');">Terminate</button>
-        <p id="wordsToFind">There is the words to find :</p>
-        <table id="originalTable"></table>
+        <button onclick="displayTable('words-to-memorize');">Terminate</button> <!-- button which displays the array with all the words to memorize -->
+        <p id="p-wordsToFind">There is the words to find :</p>
+        <table id="words-to-memorize"></table> <!-- array with all the words to memorize -->
+        <p id="result"></p> <!-- displays the result of the game -->
     </div>
 
+    <!-- SCRIPT -->
     <script type="text/javascript">
-        function displayAll() {
+        let userWordsArray = new Array();
+        var wordsArray = new Array();
+        wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
+
+        // displays the timer and the array with the words to memorize
+        function readyButton() {
             displayTimer();
             displayTable("tableId");
         }
@@ -77,37 +85,58 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
             }, 1000);
         }
 
-        let userWordsArray = new Array();
-
-        document.getElementById('word-found').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                document.getElementById('aWordFound').textContent = document.getElementById('word-found').value;
-                userWordsArray.push(document.getElementById('aWordFound').textContent);
-                console.log("key");
-                console.log(userWordsArray);
-                displayTable("userTable");
+        // event > when the user press the enter button
+        document.getElementById('input-user-word').addEventListener('keydown', function(event) 
+        {
+            if (event.key === 'Enter') 
+            {
+                if(document.getElementById('input-user-word').value.length != 0)
+                {
+                    inputWord = document.getElementById('input-user-word');
+                    displayWord = document.getElementById('display-user-word');
+                    
+                    // error if the user entered a word which was already entered before
+                    if (userWordsArray.includes(inputWord.value)) {
+                        displayWord.textContent = "ERROR : You have already written this word.";
+                    // displays an array with the words entered by the user
+                    } else {
+                        displayWord.textContent = inputWord.value;
+                        userWordsArray.push(inputWord.value);
+                        displayTable("userTable");
+                    }
+                }
             }
         });
 
-        function displayAWordFound()
+        // onclick button > displays all the words 
+        function displayUserWords()
         {
-            if(document.getElementById('word-found').value.length != 0)
+            if(document.getElementById('input-user-word').value.length != 0)
             {
-                document.getElementById('aWordFound').textContent = document.getElementById('word-found').value;
-                userWordsArray.push(document.getElementById('aWordFound').textContent);
-                console.log("button");
-                console.log(userWordsArray);
-                displayTable("userTable");
-
-
+                inputWord = document.getElementById('input-user-word');
+                displayWord = document.getElementById('display-user-word');
+                
+                // error if the user entered a word which was already entered before
+                if (userWordsArray.includes(inputWord.value)) {
+                    displayWord.textContent = "ERROR : You have already written this word.";
+                
+                // displays an array with the words entered by the user
+                } else {
+                    displayWord.textContent = inputWord.value;
+                    userWordsArray.push(inputWord.value);
+                    displayTable("userTable");
+                }
             }
         }
 
+        // displays the array with the words entered by the user
+        // or the array with all the words to memorize 
         function displayTable(tableId) 
         {
+            // create the user array
+            let tableHtml = "<tr>";
             if (tableId == "userTable")
             {
-                var tableHtml = "<tr>";
                 if (userWordsArray.length < 7)
                 {
                     for (let i = 0; i < userWordsArray.length; i++) 
@@ -121,44 +150,82 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
                     {
                         tableHtml += "<td>" + userWordsArray[i] + "</td>";
                         tableHtml += "</tr><tr>";
+                    }
                     for (let i = 7; i < userWordsArray.length; i++) 
                     {
                         tableHtml += "<td>" + userWordsArray[i] + "</td>";
                     }   
-                    }
                 }
-                tableHtml += "</tr>";
             }
+            // create the array with all the words
             else
             {
-                var wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
-
-                var tableHtml = "<tr>";
-                for (var i = 0; i < 7; i++) {
+                for (let i = 0; i < 7; i++) {
                     tableHtml += "<td>" + wordsArray[i] + "</td>";
                 }
                 tableHtml += "</tr><tr>";
-                for (var i = 7; i < 14; i++) {
+                for (let i = 7; i < 14; i++) {
                     tableHtml += "<td>" + wordsArray[i] + "</td>";
                 }
-                tableHtml += "</tr>";
 
-                if (tableId == "originalTable") 
+                // displays the sentence
+                if (tableId == "words-to-memorize") 
                 {
-                    document.getElementById("wordsToFind").style.display="block";
+                    document.getElementById("p-wordsToFind").style.display="block";
                 }
             }
+
+            // displays the array
+            tableHtml += "</tr>";
             document.getElementById(tableId).innerHTML = tableHtml;
+
+            // displays the result
+            if (tableId == "words-to-memorize") 
+            {
+                gameResult();
+            }
+        }
+
+        // calculation of the score and return the result
+        function gameResult()
+        {
+            let score = 0;
+            let result;
+            for (let i=0; i<userWordsArray.length; i++)
+            {
+                if (wordsArray.includes(userWordsArray[i]))
+                {
+                    score++;
+                }
+            }
+            if (score != 0)
+            {
+                if (score == 1)
+                {
+                    result = "Good job ! You found 1 word !";
+                }
+                else if (score == 14)
+                {
+                    result = "Great ! You found all the words !";
+                }
+                else
+                {
+                    result = "Good job ! You found " + score + " words !";
+                }
+            }
+            else
+            {
+                result = "Oh no ! You didn't find any words !";
+            }
+            document.getElementById("result").textContent = result;
         }
         
-
-
     </script>
 
     <!--
     echo '<span>';
     if(isset($_POST["submit_word"])) {
-        array_push($_SESSION["wordsYouFoundArray"], $_POST["word-found"]);
+        array_push($_SESSION["wordsYouFoundArray"], $_POST["input-user-word"]);
         echo $_SESSION["wordsYouFoundArray"][count($_SESSION["wordsYouFoundArray"])-1];
     }
     echo '</span>';
