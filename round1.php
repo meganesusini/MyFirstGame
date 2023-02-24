@@ -20,16 +20,6 @@ if (!isset($_SESSION['theNbToFind'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Game</title>
-
-    <style>
-        table, td {
-        border: 1px solid;
-        }
-
-        td {
-            width:80px;
-        }
-    </style>
 </head>
 <body>
     <?php
