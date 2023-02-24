@@ -1,9 +1,5 @@
 <?php
 session_start();
-if (!isset($_SESSION['wordsYouFoundArray'])) {
-    // If the session variable doesn't exist, generate a new empty array
-    $_SESSION['wordsYouFoundArray'] = [];
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -247,29 +243,5 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
         }
         
     </script>
-
-    <!--
-    echo '<span>';
-    if(isset($_POST["submit_word"])) {
-        array_push($_SESSION["wordsYouFoundArray"], $_POST["input-user-word"]);
-        echo $_SESSION["wordsYouFoundArray"][count($_SESSION["wordsYouFoundArray"])-1];
-    }
-    echo '</span>';
-    
-    if(isset($_POST["terminate"])) {
-        for ($i = 0; $i < count($_SESSION["wordsYouFoundArray"]); $i++) {
-            echo $_SESSION["wordsYouFoundArray"][$i];
-        }
-    }
-    
-    /*
-    PROBLEMS
-    div appears &b disapears at the bad time
-    session_unset()
-    session_destroy()
-    */
-    
-   
-    ?> -->
 </body>
 </html>
