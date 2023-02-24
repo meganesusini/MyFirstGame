@@ -13,7 +13,7 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Game</title>
     <style>
-        table, td {
+        tr, td {
         border: 1px solid;
         }
 
@@ -21,9 +21,11 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
             width:80px;
         }
 
-        #timeUp, #p-wordsToFind {
+        #timeUp, #p-wordsToFind, form {
             display:none;
+            margin-top:0;
         }
+
     </style>
 </head>
 <body>
@@ -43,30 +45,43 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
     </div>
 
     <div id="timeUp">
-        <p>Time up! Write all the words you have memorized.</p>
-        <p>Write each word, one by one.</p>
-        <input type="text" id="input-user-word"> <!-- input > user write a word -->
-        <button onclick="displayUserWords();">Submit</button> <!-- button which displays each word written by the user -->
-        <p id="display-user-word"></p> <!-- displays a word -->
+        <div id="timeUp1">
+            <p>Time up! Write all the words you have memorized.</p>
+            <p>Write each word, one by one.</p>
+            <input type="text" id="input-user-word" autofocus> <!-- input > user write a word -->
+            <button onclick="displayUserWords();">Submit</button> <!-- button which displays each word written by the user -->
+            <p id="display-user-word"></p> <!-- displays a word -->
+        </div>
         <table id="userTable"></table> <!-- displays all the words wrote by the user -->
 
-        <p>If you have finished, press the Terminate button.</p>
-        <button onclick="displayTable('words-to-memorize');">Terminate</button> <!-- button which displays the array with all the words to memorize -->
+        <div id="timeUp2">
+            <p>If you have finished, press the Terminate button.</p>
+            <button onclick="terminateButton();">Terminate</button> <!-- button which displays the array with all the words to memorize -->
+        </div>
         <p id="p-wordsToFind">There is the words to find :</p>
         <table id="words-to-memorize"></table> <!-- array with all the words to memorize -->
         <p id="result"></p> <!-- displays the result of the game -->
     </div>
+    <form id="round3" action="round3.php"><input type="submit" value="Next Round"></form>
 
     <!-- SCRIPT -->
     <script type="text/javascript">
         let userWordsArray = new Array();
-        var wordsArray = new Array();
-        wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
+        var wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
 
         // displays the timer and the array with the words to memorize
-        function readyButton() {
+        function readyButton() 
+        {
             displayTimer();
             displayTable("tableId");
+        }
+
+        function terminateButton()
+        {
+            displayTable('words-to-memorize');
+            document.getElementById("timeUp1").style.display="none";
+            document.getElementById("timeUp2").style.display="none";
+            document.getElementById("round3").style.display="block";
         }
         
         
@@ -104,6 +119,8 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
                         userWordsArray.push(inputWord.value);
                         displayTable("userTable");
                     }
+
+                    inputWord.value = "";
                 }
             }
         });
@@ -126,6 +143,8 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
                     userWordsArray.push(inputWord.value);
                     displayTable("userTable");
                 }
+
+                inputWord.value = "";
             }
         }
 
@@ -178,8 +197,15 @@ if (!isset($_SESSION['wordsYouFoundArray'])) {
             // displays the array
             tableHtml += "</tr>";
             document.getElementById(tableId).innerHTML = tableHtml;
+            if (tableId == "userTable")
+            {
+                if (userWordsArray.length == 0)
+                {
+                    document.getElementById(tableId).style.display = "none";   
+                }
+            }
 
-            // displays the result
+            // displays the result of the game
             if (tableId == "words-to-memorize") 
             {
                 gameResult();
