@@ -8,7 +8,7 @@
 </head>
 <body>
     <h2>MY FIRST GAME</h2>
-    <form method="post" action="round1.php">
+    <form method="post" action="view/round1.php">
     <h3>Write your pseudo :</h3>
     <input type="text" name="pseudo">
     <input type="submit" name="submit_pseudo" value="Submit">
