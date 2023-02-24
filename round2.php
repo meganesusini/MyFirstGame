@@ -63,7 +63,7 @@ session_start();
     <!-- SCRIPT -->
     <script type="text/javascript">
         let userWordsArray = new Array();
-        var wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
+        let wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
 
         // displays the timer and the array with the words to memorize
         function readyButton() 
@@ -83,9 +83,9 @@ session_start();
         
         function displayTimer() 
         {
-            var secondsLeft = 2; //TEST
+            let secondsLeft = 2; //TEST
             document.getElementById("timer").textContent = 10;
-            var countdown = setInterval(function() {
+            let countdown = setInterval(function() {
                 secondsLeft--;
                 document.getElementById("timer").textContent = secondsLeft;
                 if (secondsLeft <= 0) {
