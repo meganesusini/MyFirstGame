@@ -1,0 +1,16 @@
+#r3_user, #r3_results, form {
+    display:none;
+}
+
+tr, td, th {
+border: 1px solid;
+}
+
+td, th{
+    width:80px;
+}
+
+#r2_timeUp, #r2_p-wordsToFind, form {
+    display:none;
+    margin-top:0;
+}
