@@ -40,6 +40,7 @@ session_start();
         <p>Your answer : </p>
         <input type="text" id="user-answer">
         <button onclick="calculate(document.getElementById('calc').textContent, document.getElementById('user-answer').value);">Submit</button>
+        <p id="error-msg"></p>
     </div>
     <div id="results">
         <button id="res-button" onclick="seeResults();">See the results</button>
@@ -61,6 +62,11 @@ session_start();
         const symbols = ['+', '-', 'x'];
         let calcNb = 0;
 
+        let inputUserAnswer = document.getElementById('user-answer');
+        let spanTimer = document.getElementById("timer");
+        let divUser = document.getElementById("user");
+        let spanCalc = document.getElementById("calc");
+
         function readyButton()
         {
             // DISPLAYS TIMER (5MIN)
@@ -75,7 +81,7 @@ session_start();
 
         function timer(stop)
         {
-            document.getElementById("timer").textContent = "5:00";
+            spanTimer.textContent = "5:00";
             // Define the countdown duration in seconds
             let countdownDuration = 5 * 60;
 
@@ -83,7 +89,7 @@ session_start();
             function displayCountdown() {
             const minutes = Math.floor(countdownDuration / 60);
             const seconds = countdownDuration % 60;
-            document.getElementById("timer").textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            spanTimer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             }
 
             // Start the countdown every seconds
@@ -94,7 +100,6 @@ session_start();
             // Stop the countdown is the duration is reached
             if (countdownDuration < stop) {
                 clearInterval(countdownInterval);
-                console.log("Le compte à rebours est terminé !");
             }
             }, 1000);
         }
@@ -110,62 +115,77 @@ session_start();
             randomNb2 = Math.floor(Math.random() * 10);
             symbol = symbols[calcNb-1];
 
-            document.getElementById("calc").textContent = randomNb1.toString() + " " + symbol.toString() + " " + randomNb2.toString();
-            document.getElementById("user").style.display="block";
+            spanCalc.textContent = randomNb1.toString() + " " + symbol.toString() + " " + randomNb2.toString();
+            divUser.style.display="block";
 
             
         }
+        inputUserAnswer.addEventListener('keydown', function(event) 
+        {
+            if (event.key === 'Enter') 
+            {
+                calculate(spanCalc.textContent, inputUserAnswer.value);
+            }
+        });
         
         function calculate(calculation, userAnswer)
         {
-            calculation = calculation.replace(/\s+/g, '');
-            calculations.push(calculation);
-            // console.log(calculation);
-            userAnswer = parseInt(userAnswer.replace(/\s+/g, ''));
-            u_calcResults.push(userAnswer);
-
-            // console.log(userAnswer);
-
-            // console.log(calculation[1]);
-            let result;
-
-            switch (calculation[1])
+            if(inputUserAnswer.value.length != 0)
             {
-                case "+" :
-                    result = parseInt(calculation[0]) + parseInt(calculation[2]);
-                    break;
-                case "-" :
-                    result = parseInt(calculation[0]) - parseInt(calculation[2]);
-                    break;
-                case "x" :
-                    result = parseInt(calculation[0]) * parseInt(calculation[2]);
-                    break;
-            }
+                if (isNaN(inputUserAnswer.value))
+                {
+                    document.getElementById("error-msg").textContent = "ERROR : You answer must be a number.";
+                }
+                else
+                {
+                    document.getElementById("error-msg").textContent = "";
+                    calculation = calculation.replace(/\s+/g, '');
+                    calculations.push(calculation);
 
-            calcResults.push(result);
+                    userAnswer = parseInt(userAnswer.replace(/\s+/g, ''));
+                    u_calcResults.push(userAnswer);
 
-            if (userAnswer == result)
-            {
-                console.log(true);
-            }
-            else
-            {
-                console.log(false);
-            }
+                    let result;
 
-            if (calcNb<3)
-            {
-                displayCalc();
+                    switch (calculation[1])
+                    {
+                        case "+" :
+                            result = parseInt(calculation[0]) + parseInt(calculation[2]);
+                            break;
+                        case "-" :
+                            result = parseInt(calculation[0]) - parseInt(calculation[2]);
+                            break;
+                        case "x" :
+                            result = parseInt(calculation[0]) * parseInt(calculation[2]);
+                            break;
+                    }
+
+                    calcResults.push(result);
+
+                    if (userAnswer == result)
+                    {
+                        console.log(true);
+                    }
+                    else
+                    {
+                        console.log(false);
+                    }
+
+                    if (calcNb<3)
+                    {
+                        displayCalc();
+                    }
+                    else
+                    {
+                        document.getElementById("results").style.display="block";
+                        divUser.style.display="none";
+                        spanTimer.style.display="none";
+                        document.getElementById("display-calc").style.display="none";
+                        spanTimer.textContent = timer(300);
+                    }
+                }
             }
-            else
-            {
-                document.getElementById("results").style.display="block";
-                document.getElementById("user").style.display="none";
-                console.log(document.getElementById("timer").textContent);
-                document.getElementById("timer").style.display="none";
-                document.getElementById("display-calc").style.display="none";
-                document.getElementById("timer").textContent = timer(300);
-            }
+            inputUserAnswer.value = "";
         }
 
         function seeResults()
