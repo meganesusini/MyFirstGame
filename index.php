@@ -9,8 +9,15 @@
 <body>
     <h2>MY FIRST GAME</h2>
     <form method="post" action="view/round1.php">
-    <h3>Write your pseudo :</h3>
-    <input type="text" name="pseudo">
+    <h3>New ? Sign on :</h3>
+    <label for="">Pseudo </label><input type="text" name="pseudo">
+    <label for="">Password </label><input type="text" name="pwd">
+    <input type="submit" name="submit_pseudo" value="Submit">
+    </form>  
+    <form method="post" action="view/round1.php">
+    <h3>Otherwise, write your pseudo :</h3>
+    <label for="">Pseudo </label><input type="text" name="pseudo">
+    <label for="">Password </label><input type="text" name="pwd">
     <input type="submit" name="submit_pseudo" value="Submit">
     </form>  
 </body>
