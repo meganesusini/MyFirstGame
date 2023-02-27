@@ -12,19 +12,19 @@ class Player
     }
 
 	public function getPseudo() {
-		return $this->$pseudo;
+		return $this->pseudo;
 	}
 
 	public function setPseudo($pseudo) {
-		$this->$pseudo = $pseudo;
+		$this->pseudo = $pseudo;
 	}
 
 	public function getPassword() {
-		return $this->$password;
+		return $this->password;
 	}
 
 	public function setPassword($password) {
-		$this->$password = $password;
+		$this->password = $password;
 	}
 
 }

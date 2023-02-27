@@ -15,7 +15,7 @@ class PlayerDAO
         $this->db = $db;
     }
 
-    public function getDb($db)
+    public function getDb()
     {
         return $this->db;
     }
@@ -43,7 +43,7 @@ class PlayerDAO
     // Check if the password is secure
     public function isSecure($password)
     {
-        if (strlen($chaine) >= 12 && preg_match('/[a-z]/', $chaine) && preg_match('/[A-Z]/', $chaine) && preg_match('/\d/', $chaine) && preg_match('/[^a-zA-Z\d]/', $chaine))
+        if (strlen($password) >= 12 && preg_match('/[a-z]/', $password) && preg_match('/[A-Z]/', $password) && preg_match('/\d/', $password) && preg_match('/[^a-zA-Z\d]/', $password))
         {
             return true;
         }
@@ -51,6 +51,16 @@ class PlayerDAO
         {
             return false;
         }
+    }
+
+    // Check if the password matches the pseudo
+    // in progress
+    public function matches($password)
+    {
+        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE `password` = ?");
+        $request->execute([$password]); // ??
+
+        return $request->fetch()["pseudo"]; // ??
     }
 }
 ?>
