@@ -11,14 +11,35 @@
     <form method="post" action="view/round1.php">
     <h3>New ? Sign on :</h3>
     <label for="">Pseudo </label><input type="text" name="pseudo">
-    <label for="">Password </label><input type="text" name="pwd">
+    <label for="">Password </label><input type="text" name="password">
     <input type="submit" name="submit_pseudo" value="Submit">
+    <p id="signon-errormsg"></p>
     </form>  
     <form method="post" action="view/round1.php">
     <h3>Otherwise, write your pseudo :</h3>
     <label for="">Pseudo </label><input type="text" name="pseudo">
     <label for="">Password </label><input type="text" name="pwd">
     <input type="submit" name="submit_pseudo" value="Submit">
+    <p id="login-errormsg"></p>
     </form>  
+
+    <?php
+        require_once("controller/HomeController.php");
+
+        $action = isset($_GET["action"]) ? $_GET["action"] : "index";
+        
+        $controller = new HomeController();
+        
+        switch($action) {
+            case "index":
+                $controller->index();
+                break;
+            case "registration":
+                $controller->registration();
+                break;
+            default:
+                $controller->index();
+            }
+    ?>
 </body>
 </html>
