@@ -2,14 +2,20 @@
 
 class Player 
 {
+	private $id;
     private $pseudo;
     private $password;
 
     public function __construct($pseudo, $password)
     {
+		$this->id;
         $this->pseudo = $pseudo;
         $this->password = $password;
     }
+
+	public function getId() {
+		return $this->id;
+	}
 
 	public function getPseudo() {
 		return $this->pseudo;

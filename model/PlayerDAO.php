@@ -26,18 +26,18 @@ class PlayerDAO
         $pseudo = $newPlayer->getPseudo();
         $password = $newPlayer->getPassword();
 
-        $request = $this->getDb()->prepare("INSERT INTO Player VALUES (?, ?)");
+        $request = $this->getDb()->prepare("INSERT INTO Player (pseudo, password) VALUES (?, ?)");
         $request->execute([$pseudo, $password]);
     }
 
     // Check if the pseudo already exists
-    // Return how many pseudo there are
+    // Return pseudo or false
     public function exists($pseudo)
     {
-        $request = $this->getDb()->prepare("SELECT COUNT(*) AS nb FROM Player WHERE pseudo = ?");
+        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE pseudo = ?");
         $request->execute([$pseudo]);
 
-        return $request->fetchAll();
+        return $request->fetch();
     }
 
     // Check if the password is secure
@@ -54,13 +54,12 @@ class PlayerDAO
     }
 
     // Check if the password matches the pseudo
-    // in progress
-    public function matches($password)
+    public function matches($password, $pseudo)
     {
-        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE `password` = ?");
-        $request->execute([$password]); // ??
+        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE (password = ? AND pseudo = ?)");
+        $request->execute([$password, $pseudo]);
 
-        return $request->fetch()["pseudo"]; // ??
+        return $request->fetch();
     }
 }
 ?>
