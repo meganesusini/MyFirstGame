@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,30 +32,23 @@
 
         if(!isset($_GET["action"]))
         {
-            echo "1";
             $action = "index";
         }
         else
         {
-            echo "2";
             $action = $_GET["action"];
         } 
 
-        echo "3";
         $controller = new HomeController();
-        echo "4";
         
         switch($action) {
             case "index":
-                echo "5";
                 $controller->index();
                 break;
             case "registration":
-                echo "6";
                 $controller->registration();
                 break;
             case "authentication":
-                echo "7";
                 $controller->authentication();
                 break;
 

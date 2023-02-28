@@ -1,10 +1,5 @@
 <?php
 session_start();
-
-if (isset($_POST["pseudo"])) {
-    // If the previous page return a pseudo -> session variable = pseudo
-    $_SESSION["myPseudo"] = $_POST["pseudo"];
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
