@@ -28,6 +28,11 @@ session_start();
     <h3>FIRST ROUND</h3>
     <p>GUESS A NUMBER</p>
     <p>The number to guess is between 0 and 100 included</p>
+    <div id="displayButton">
+        <p>You have 1 minute, are you ready ?</p>
+        <button onclick="readyButton();">Ready</button> <!-- start a timer (1min) -->
+    </div>
+    <p id="r1_timer"></p>
 
     <div id="r1_deleteAfter">
         <input type="text" autofocus id="r1_nb">
@@ -39,7 +44,11 @@ session_start();
     <span id="r1_clue"></span> 
 
     <!-- go to the next round -->
-    <form id="r1_next" action="./index.php?controller=rounds&action=round1"><input type="submit" value="Next Round"></form>
+    <form id="r1_next" action="./index.php?controller=rounds&action=round1">
+        <input type="text" name="triesNb" id="triesNb" value="">
+        <input type="submit" value="Next Round">
+    </form>
+
 
     <script src="../js/scripts_r1.js"></script>
  </body>

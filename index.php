@@ -79,8 +79,8 @@ session_start();
                     $controller->authentication();
                     break;
                 // controller = rounds
-                // case "round1":
-                //     $controller->
+                case "round1":
+                    $controller->saveData();
             }
             // end action management
         ?>

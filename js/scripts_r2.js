@@ -20,7 +20,7 @@ function terminateButton()
 
 function displayTimer() 
 {
-    let secondsLeft = 2; //TEST
+    let secondsLeft = 10;
     document.getElementById("r2_timer").textContent = 10;
     let countdown = setInterval(function() {
         secondsLeft--;
