@@ -39,7 +39,7 @@ session_start();
     <span id="r1_clue"></span> 
 
     <!-- go to the next round -->
-    <form id="r1_next" action="round2.php"><input type="submit" value="Next Round"></form>
+    <form id="r1_next" action="./index.php?controller=rounds&action=round1"><input type="submit" value="Next Round"></form>
 
     <script src="../js/scripts_r1.js"></script>
  </body>

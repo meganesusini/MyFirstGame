@@ -30,6 +30,16 @@ class PlayerDAO
         $request->execute([$pseudo, $password]);
     }
 
+    // Select a player
+    // in progress
+    public function selectPlayer($pseudo)
+    {
+        $request = $this->getDb()->prepare("SELECT * FROM Player WHERE pseudo = ?");
+        $request->execute([$pseudo]);
+
+        return $request->fetchAll();
+    }
+
     // Check if the pseudo already exists
     // Return pseudo or false
     public function exists($pseudo)
