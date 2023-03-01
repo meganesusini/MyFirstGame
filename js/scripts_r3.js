@@ -14,23 +14,24 @@ let spanTimer = document.getElementById("r3_timer");
 let divUser = document.getElementById("r3_user");
 let spanCalc = document.getElementById("r3_calc");
 
+let countdownInterval, countdownDuration;
+
 function readyButton()
 {
-    // DISPLAYS TIMER (5MIN)
-        timer(1);
+    // DISPLAYS TIMER (1MIN)
+        timer();
 
     // DISPLAYS CALCULATIONS
         displayCalc();
         // remove div#ready
         document.getElementById("r3_ready").style.display="none";
-
 }
 
-function timer(stop)
+function timer()
 {
-    spanTimer.textContent = "5:00";
+    spanTimer.textContent = "1:00";
     // Define the countdown duration in seconds
-    let countdownDuration = 5 * 60;
+    countdownDuration = 60;
 
     // Definition of the function to display the countdown
     function displayCountdown() {
@@ -40,15 +41,28 @@ function timer(stop)
     }
 
     // Start the countdown every seconds
-    let countdownInterval = setInterval(function() {
+    countdownInterval = setInterval(function() {
     countdownDuration--;
     displayCountdown();
     
     // Stop the countdown is the duration is reached
-    if (countdownDuration < stop) {
+    if (countdownDuration < 1) {
         clearInterval(countdownInterval);
+        // document.getElementById("r3_sentence2").textContent = "Number of right answers = " + rightAnswers.toString();
+        document.getElementById("r3_results").style.display="block";
+        divUser.style.display="none";
+        spanTimer.style.display="none";
+        document.getElementById("r3_display-calc").style.display="none";
+        // document.getElementById("r3_timeSpent").value = 60 - countdownDuration;
+        // document.getElementById("r3_rightAnswers").value = rightAnswers;
+
     }
     }, 1000);
+}
+
+function stopTimer()
+{
+    clearInterval(countdownInterval);
 }
 
 function displayCalc()
@@ -63,10 +77,9 @@ function displayCalc()
     symbol = symbols[calcNb-1];
 
     spanCalc.textContent = randomNb1.toString() + " " + symbol.toString() + " " + randomNb2.toString();
-    divUser.style.display="block";
-
-    
+    divUser.style.display="block";   
 }
+
 inputUserAnswer.addEventListener('keydown', function(event) 
 {
     if (event.key === 'Enter') 
@@ -85,7 +98,9 @@ function calculate(calculation, userAnswer)
         }
         else
         {
-            document.getElementById("r3_error-msg").textContent = "";
+            if (calculation != "")
+            {
+                document.getElementById("r3_error-msg").textContent = "";
             calculation = calculation.replace(/\s+/g, '');
             calculations.push(calculation);
 
@@ -119,8 +134,10 @@ function calculate(calculation, userAnswer)
                 divUser.style.display="none";
                 spanTimer.style.display="none";
                 document.getElementById("r3_display-calc").style.display="none";
-                spanTimer.textContent = timer(300);
+                stopTimer();
             }
+            }
+            
         }
     }
     inputUserAnswer.value = "";
@@ -136,7 +153,7 @@ function seeResults()
         tableHtml += "<th>" + headers[i] + "</th>";
     }
     tableHtml += "</tr></thead><tbody>";
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < calculations.length; i++) {
         tableHtml += "<tr><td>" + calculations[i] + "</td>";
         tableHtml += "<td>" + u_calcResults[i] + "</td>";
         tableHtml += "<td>" + calcResults[i] + "</td></tr>";
@@ -152,6 +169,15 @@ function seeResults()
     document.getElementById("r3_sentence2").textContent = "Number of right answers = " + rightAnswers.toString();
     document.getElementById("r3_res-button").style.display="none";
     document.getElementById("r3_nextPage").style.display="block";
+
+    if (document.getElementById("r3_timeSpent").value == "")
+    {
+        document.getElementById("r3_timeSpent").value = 60 - countdownDuration;
+    }
+    if (document.getElementById("r3_rightAnswers").value == "")
+    {
+        document.getElementById("r3_rightAnswers").value = rightAnswers;
+    }
 }
 
 // END ROUND3

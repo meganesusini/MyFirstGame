@@ -44,6 +44,10 @@ session_start();
         <p id="r3_sentence2"></p> <!-- says if the user won or not -->
     </div>
 
-    <form action="" id="r3_nextPage"><input type="submit" value="Next Page"></form>
+    <form action="" id="r3_nextPage">
+        <input type="text" id="r3_timeSpent" name="r3_timeSpent">
+        <input type="text" id="r3_rightAnswers" name="r3_timeSpent">
+        <input type="submit" value="Next Page">
+    </form>
     
     <script src="../js/scripts_r3.js"> </script>
