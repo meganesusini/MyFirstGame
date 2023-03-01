@@ -2,6 +2,8 @@
 // RoundsController.php
 require_once("./model/BdPdoConnection.php");
 require_once("./model/RoundDAO.php");
+require_once("./model/Round1DAO.php");
+require_once("./model/Round2DAO.php");
 
 class RoundsController 
 {
@@ -12,20 +14,62 @@ class RoundsController
     }
 
     public function r1_saveData() {
-        $timeSpent = $_SESSION["r1_time"];
-        $triesNb = $_SESSION["r1_tries"];
+        $timeSpent = $_POST["r1_timeSpent"];
+        $triesNb = $_POST["r1_triesNb"];
 
         // Create a new round
         $newRoundDAO = new RoundDAO($this->connection);
-
-        // create function which select a game first
-        $gameId = $_SESSION["myGame"];
-        $newRound = new Round($gameId);
+        $newRound = new Round($_SESSION["myGame"]);
         $newRoundDAO->addRound($newRound);
-        $roundId = $newRoundDAO->selectRound($gameId)[0]["id"];
+
+        $_SESSION["myRound"] = $newRoundDAO->getLastRound()[0]; 
+
+        // Create a new round1
+        $newRound1DAO = new Round1DAO($this->connection);
+        $newRound1 = new Round1($triesNb, $timeSpent, $_SESSION["myRound"]);
+        $newRound1DAO->addRound1($newRound1);
        
-       $_SESSION["myRound"] = $roundId; 
        header('Location: ./view/round2.php');
+       exit();
+    }
+
+    public function r2_saveData() {
+        $timeSpent = $_POST["r2_timeSpent"];
+        $wordsNb = $_POST["r2_wordsNb"];
+
+        // Create a new round
+        $newRoundDAO = new RoundDAO($this->connection);
+        $newRound = new Round($_SESSION["myGame"]);
+        $newRoundDAO->addRound($newRound);
+
+        $_SESSION["myRound"] = $newRoundDAO->getLastRound()[0]; 
+
+        // Create a new round2
+        $newRound2DAO = new Round2DAO($this->connection);
+        $newRound2 = new Round2($wordsNb, $timeSpent, $_SESSION["myRound"]);
+        $newRound2DAO->addRound2($newRound2);
+       
+       header('Location: ./view/round3.php');
+       exit();
+    }
+
+    public function r3_saveData() {
+        $timeSpent = $_POST["r2_timeSpent"];
+        $wordsNb = $_POST["r2_wordsNb"];
+
+        // Create a new round
+        $newRoundDAO = new RoundDAO($this->connection);
+        $newRound = new Round($_SESSION["myGame"]);
+        $newRoundDAO->addRound($newRound);
+
+        $_SESSION["myRound"] = $newRoundDAO->getLastRound()[0]; 
+
+        // Create a new round2
+        $newRound2DAO = new Round2DAO($this->connection);
+        $newRound2 = new Round2($wordsNb, $timeSpent, $_SESSION["myRound"]);
+        $newRound2DAO->addRound2($newRound2);
+       
+       header('Location: ./view/round3.php');
        exit();
     }
 }

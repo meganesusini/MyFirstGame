@@ -82,9 +82,13 @@ session_start();
                     break;
                 // controller = rounds
                 case "round1":
-                    // $_SESSION["r1_tries"] = $_POST["r1_triesNb"];
-                    // $_SESSION["r1_time"] = $_POST["r1_timeSpent"];
                     $controller->r1_saveData();
+                    break;
+                case "round2":
+                    $controller->r2_saveData();
+                    break;
+                case "round3":
+                    $controller->r3_saveData();
                     break;
             }
             // end action management

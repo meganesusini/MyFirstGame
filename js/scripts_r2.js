@@ -2,10 +2,19 @@
 let userWordsArray = new Array();
 let wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
 
+let littleTimer = document.getElementById("r2_little_timer");
+let inputUserWord = document.getElementById("r2_input-user-word");
+let displayUserWord = document.getElementById("r2_display-user-word");
+let timer = document.getElementById("r2_timer");
+
+let wordsFoundNb = 0;
+let countdownInterval, countdownDuration;
+
+
 // displays the timer and the array with the words to memorize
 function readyButton() 
 {
-    displayTimer();
+    displayLittleTimer();
     displayTable("r2_tableId");
 }
 
@@ -16,44 +25,77 @@ function terminateButton()
     document.getElementById("r2_timeUp1").style.display="none";
     document.getElementById("r2_timeUp2").style.display="none";
     document.getElementById("r2_round3").style.display="block";
+    stopTimer();
+    document.getElementById("r2_wordsNb").value = gameResult();
+    document.getElementById("r2_timeSpent").value = 60 - countdownDuration;
 }
 
-function displayTimer() 
+function displayLittleTimer() 
 {
     let secondsLeft = 10;
-    document.getElementById("r2_timer").textContent = 10;
+    littleTimer.textContent = 10;
     let countdown = setInterval(function() {
         secondsLeft--;
-        document.getElementById("r2_timer").textContent = secondsLeft;
+        littleTimer.textContent = secondsLeft;
         if (secondsLeft <= 0) {
             clearInterval(countdown);
             document.getElementById("r2_timeUp").style.display="block"; // if timer = 0 -> display div
             document.getElementById("r2_ready").style.display="none"; // if timer = 0 -> remove div
+            displayTimer();
         }
     }, 1000);
 }
 
+function displayTimer()
+{
+    timer.textContent = "1:00";
+    // Define the countdown duration in seconds
+    countdownDuration = 60;
+
+    // Definition of the function to display the countdown
+    function displayCountdown() {
+    const minutes = Math.floor(countdownDuration / 60);
+    const seconds = countdownDuration % 60;
+    timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // Start the countdown every seconds
+    countdownInterval = setInterval(function() {
+    countdownDuration--;
+
+    displayCountdown();
+    
+    // Stop the countdown is the duration is reached
+    if (countdownDuration < 1) {
+        clearInterval(countdownInterval);
+        terminateButton();
+    }
+    }, 1000);
+}
+
+function stopTimer()
+{
+    clearInterval(countdownInterval);
+}
+
 // event > when the user press the enter button
-document.getElementById("r2_input-user-word").addEventListener('keydown', function(event) 
+inputUserWord.addEventListener('keydown', function(event) 
 {
     if (event.key === 'Enter') 
     {
-        if(document.getElementById("r2_input-user-word").value.length != 0)
-        {
-            inputWord = document.getElementById("r2_input-user-word");
-            displayWord = document.getElementById("r2_display-user-word");
-            
+        if(inputUserWord.value.length != 0)
+        {            
             // error if the user entered a word which was already entered before
-            if (userWordsArray.includes(inputWord.value)) {
-                displayWord.textContent = "ERROR : You have already written this word.";
+            if (userWordsArray.includes(inputUserWord.value)) {
+                displayUserWord.textContent = "ERROR : You have already written this word.";
             // displays an array with the words entered by the user
             } else {
-                displayWord.textContent = inputWord.value;
-                userWordsArray.push(inputWord.value);
+                displayUserWord.textContent = inputUserWord.value;
+                userWordsArray.push(inputUserWord.value);
                 displayTable("r2_userTable");
             }
 
-            inputWord.value = "";
+            inputUserWord.value = "";
         }
     }
 });
@@ -61,23 +103,20 @@ document.getElementById("r2_input-user-word").addEventListener('keydown', functi
 // onclick button > displays all the words 
 function displayUserWords()
 {
-    if(document.getElementById("r2_input-user-word").value.length != 0)
-    {
-        inputWord = document.getElementById("r2_input-user-word");
-        displayWord = document.getElementById("r2_display-user-word");
-        
+    if(inputUserWord.value.length != 0)
+    {        
         // error if the user entered a word which was already entered before
-        if (userWordsArray.includes(inputWord.value)) {
-            displayWord.textContent = "ERROR : You have already written this word.";
+        if (userWordsArray.includes(inputUserWord.value)) {
+            displayUserWord.textContent = "ERROR : You have already written this word.";
         
         // displays an array with the words entered by the user
         } else {
-            displayWord.textContent = inputWord.value;
-            userWordsArray.push(inputWord.value);
+            displayUserWord.textContent = inputUserWord.value;
+            userWordsArray.push(inputUserWord.value);
             displayTable("r2_userTable");
         }
 
-        inputWord.value = "";
+        inputUserWord.value = "";
     }
 }
 
@@ -161,7 +200,7 @@ function gameResult()
     {
         if (score == 1)
         {
-            result = "Good job ! You found 1 word !";
+            result = "You found 1 word !";
         }
         else if (score == 14)
         {
@@ -169,14 +208,22 @@ function gameResult()
         }
         else
         {
-            result = "Good job ! You found " + score + " words !";
+            result = "You found " + score + " words !";
         }
     }
     else
     {
         result = "Oh no ! You didn't find any words !";
     }
-    document.getElementById("r2_result").textContent = result;
+    if (document.getElementById("r2_result").textContent == "")
+    {
+        document.getElementById("r2_result").textContent = result;
+    }
+    else
+    {
+        return score;
+    }
+
 }
 
 // END ROUND2

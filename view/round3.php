@@ -17,7 +17,7 @@ session_start();
     <p>You have to resolve the 3 calculations as fast as possible.</p>
 
     <div id="r3_ready">
-        <p>You have 5 minutes maximum.</p>
+        <p>You have 1 minute maximum.</p>
         <p>Are you ready ? Press the button !</p>
         <button onclick="readyButton();">Ready</button> <!-- displays a timer and the calculations one by one -->
     </div>
