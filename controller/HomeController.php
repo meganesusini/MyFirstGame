@@ -46,19 +46,17 @@ class HomeController
                     // Add the player to the database
                     $newPlayer = new Player($pseudo, $password);
                     $newPlayerDAO->addPlayer($newPlayer);
-                    $_SESSION["myPseudo"] = $pseudo;
 
                     // Create a new game
                     $newGameDAO = new GameDAO($this->connection);
-                    // create function which select a player first
+                    // create function which select a player id first
                     $playerId = $newPlayerDAO->selectPlayer($pseudo)[0]["id"];
+                    
                     $newGame = new Game($playerId);
                     $newGameDAO->addGame($newGame);
-                    $gameId = $newGameDAO->selectGame($playerId)[0]["id"];
 
-                    $_SESSION["myGame"] = $gameId;
+                    $_SESSION["myGame"] = $newGameDAO->getLastGame()[0];
                     $_SESSION["myPseudo"] = $pseudo;
-
                     header('Location: view/round1.php');
                     exit();
                 }
@@ -95,9 +93,8 @@ class HomeController
                     $playerId = $newPlayerDAO->selectPlayer($pseudo)[0]["id"];
                     $newGame = new Game($playerId);
                     $newGameDAO->addGame($newGame);
-                    $gameId = $newGameDAO->selectGame($playerId)[0]["id"];
 
-                    $_SESSION["myGame"] = $gameId;
+                    $_SESSION["myGame"] = $newGameDAO->getLastGame()[0];
                     $_SESSION["myPseudo"] = $pseudo;
                     header('Location: ./view/round1.php');
                     exit();

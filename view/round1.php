@@ -30,7 +30,8 @@ session_start();
     <p>The number to guess is between 0 and 100 included</p>
     <!-- test -->
     <?php
-        echo "Game nb : ".$_SESSION["myGame"];
+        echo "Game nb : ";
+        echo $_SESSION["myGame"];
     ?>
     <div id="displayButton">
         <p>You have 1 minute, are you ready ?</p>

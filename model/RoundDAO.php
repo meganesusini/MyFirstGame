@@ -37,5 +37,14 @@ class RoundDAO
 
         return $request->fetchAll();
     }
+
+    // Select the last round id
+    public function getLastRound()
+    {
+        $request = $this->getDb()->prepare("SELECT MAX(id) FROM Round");
+        $request->execute();
+
+        return $request->fetch();
+    }
 }
 ?>

@@ -37,5 +37,14 @@ class GameDAO
 
         return $request->fetchAll();
     }
+
+    // Select the last game id
+    public function getLastGame()
+    {
+        $request = $this->getDb()->prepare("SELECT MAX(id) FROM Game");
+        $request->execute();
+
+        return $request->fetch();
+    }
 }
 ?>
