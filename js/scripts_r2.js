@@ -14,6 +14,7 @@ let countdownInterval, countdownDuration;
 // displays the timer and the array with the words to memorize
 function readyButton() 
 {
+    document.getElementById("readyButton").style.display = "none";
     displayLittleTimer();
     displayTable("r2_tableId");
 }

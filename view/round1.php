@@ -28,11 +28,7 @@ session_start();
     <h3>FIRST ROUND</h3>
     <p>GUESS A NUMBER</p>
     <p>The number to guess is between 0 and 100 included</p>
-    <!-- test -->
-    <?php
-        echo "Game nb : ";
-        echo $_SESSION["myGame"];
-    ?>
+
     <div id="displayButton">
         <p>You have 1 minute, are you ready ?</p>
         <button onclick="readyButton();">Ready</button> <!-- start a timer (1min) -->

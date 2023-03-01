@@ -46,7 +46,7 @@ session_start();
 
     <form method="post" action="../index.php?controller=rounds&action=round3" id="r3_nextPage">
         <input type="hidden" id="r3_timeSpent" name="r3_timeSpent">
-        <input type="hidden" id="r3_rightAnswers" name="r3_timeSpent">
+        <input type="hidden" id="r3_rightAnswers" name="r3_rightAnswers">
         <input type="submit" value="Next Page">
     </form>
     

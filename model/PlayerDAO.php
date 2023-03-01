@@ -70,5 +70,14 @@ class PlayerDAO
 
         return $request->fetch();
     }
+
+    // Select all the players
+    public function getAllPlayers()
+    {
+        $request = $this->getDb()->prepare("SELECT * FROM Player");
+        $request->execute();
+
+        return $request->fetchAll();
+    }
 }
 ?>

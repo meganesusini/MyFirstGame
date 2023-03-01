@@ -31,9 +31,7 @@ session_start();
         <?php        
             require_once("controller/HomeController.php");
             require_once("controller/RoundsController.php");
-            require_once("model/GameDAO.php"); // ??
-            require_once("model/BdPdoConnection.php"); //??
-
+            require_once("controller/RankingController.php");
 
             // Management of controllers
             if(!isset($_GET["controller"]))
@@ -52,6 +50,9 @@ session_start();
                     break;
                 case "rounds":
                     $controller = new RoundsController();
+                    break;
+                case "rank":
+                    $controller = new RankingController();
                     break;
             }
             // end ctrl management
@@ -89,6 +90,9 @@ session_start();
                     break;
                 case "round3":
                     $controller->r3_saveData();
+                    break;
+                case "displayRank":
+                    $controller->displayRank();
                     break;
             }
             // end action management

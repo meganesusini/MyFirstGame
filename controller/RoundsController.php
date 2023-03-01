@@ -4,6 +4,7 @@ require_once("./model/BdPdoConnection.php");
 require_once("./model/RoundDAO.php");
 require_once("./model/Round1DAO.php");
 require_once("./model/Round2DAO.php");
+require_once("./model/Round3DAO.php");
 
 class RoundsController 
 {
@@ -37,13 +38,6 @@ class RoundsController
         $timeSpent = $_POST["r2_timeSpent"];
         $wordsNb = $_POST["r2_wordsNb"];
 
-        // Create a new round
-        $newRoundDAO = new RoundDAO($this->connection);
-        $newRound = new Round($_SESSION["myGame"]);
-        $newRoundDAO->addRound($newRound);
-
-        $_SESSION["myRound"] = $newRoundDAO->getLastRound()[0]; 
-
         // Create a new round2
         $newRound2DAO = new Round2DAO($this->connection);
         $newRound2 = new Round2($wordsNb, $timeSpent, $_SESSION["myRound"]);
@@ -57,17 +51,10 @@ class RoundsController
         $timeSpent = $_POST["r3_timeSpent"];
         $wordsNb = $_POST["r3_rightAnswers"];
 
-        // Create a new round
-        $newRoundDAO = new RoundDAO($this->connection);
-        $newRound = new Round($_SESSION["myGame"]);
-        $newRoundDAO->addRound($newRound);
-
-        $_SESSION["myRound"] = $newRoundDAO->getLastRound()[0]; 
-
         // Create a new round3
         $newRound3DAO = new Round3DAO($this->connection);
         $newRound3 = new Round3($wordsNb, $timeSpent, $_SESSION["myRound"]);
-        $newRound3DAO->addRound3($newRound2);
+        $newRound3DAO->addRound3($newRound3);
        
        header('Location: ./view/ranking.php');
        exit();

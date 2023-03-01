@@ -22,7 +22,7 @@ session_start();
 
     <div id="r2_ready">
         <p>Are you ready ? Press the button !</p>
-        <button onclick="readyButton();">Ready</button> <!-- displays the timer and the array with the words to memorize -->
+        <button id="readyButton" onclick="readyButton();">Ready</button> <!-- displays the timer and the array with the words to memorize -->
         <span id="r2_little_timer"></span> <!-- displays the timer -->
         <table id="r2_tableId"></table> <!-- displays the array with the words to memorize -->
     </div>

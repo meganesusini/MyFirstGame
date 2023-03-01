@@ -19,9 +19,10 @@ function findTheNb(userNb, nbToFind)
         document.getElementById("r1_next").style.display="block";
 
         // stop the timer > save the time spent > save the nb of tries
-        document.getElementById("r1_triesNb").value = triesNb+1;
         stopTimer();
-        document.getElementById("r1_timeSpent").value = countdownDuration;
+        document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
+        document.getElementById("r1_triesNb").value = triesNb+1;
+        pTimer.style.display = "none";
         
     }
     else if (userNb > nbToFind)
@@ -52,7 +53,7 @@ function timer()
 {
     pTimer.textContent = "1:00";
     // Define the countdown duration in seconds
-    countdownDuration = 60;
+    countdownDuration = 2;
 
     // Definition of the function to display the countdown
     function displayCountdown() {
@@ -73,7 +74,15 @@ function timer()
 
         // delete deleteafter div
         divDelete.style.display = "none";
+        pTimer.style.display = "none";
         spanClue.textContent = "Oh no, you couldn't find the right number in time !";
+        divDelete.style.display="none";
+        document.getElementById("r1_next").style.display="block";
+
+        // stop the timer > save the time spent > save the nb of tries
+        document.getElementById("r1_triesNb").value = triesNb+1;
+        stopTimer();
+        document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
     }
     }, 1000);
 }
