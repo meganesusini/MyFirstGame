@@ -7,6 +7,7 @@ let pTimer = document.getElementById("r1_timer");
 const randomNb = Math.floor(Math.random() * 101); // generate a random number
 
 let triesNb = 0;
+let countdownInterval, countdownDuration;
 
 // onclick button > displays if the user found the right number
 function findTheNb(userNb, nbToFind)
@@ -16,8 +17,12 @@ function findTheNb(userNb, nbToFind)
         spanClue.textContent = "You are right ! The number is " + nbToFind.toString();
         divDelete.style.display="none";
         document.getElementById("r1_next").style.display="block";
-        document.getElementById("triesNb").value = triesNb+1;
-        // stop the timer > save the time spent
+
+        // stop the timer > save the time spent > save the nb of tries
+        document.getElementById("r1_triesNb").value = triesNb+1;
+        stopTimer();
+        document.getElementById("r1_timeSpent").value = countdownDuration;
+        
     }
     else if (userNb > nbToFind)
     {
@@ -43,11 +48,11 @@ inputNb.addEventListener('keydown', function(event)
     }
 });
 
-function timer(stop)
+function timer()
 {
     pTimer.textContent = "1:00";
     // Define the countdown duration in seconds
-    let countdownDuration = 60;
+    countdownDuration = 60;
 
     // Definition of the function to display the countdown
     function displayCountdown() {
@@ -57,12 +62,13 @@ function timer(stop)
     }
 
     // Start the countdown every seconds
-    let countdownInterval = setInterval(function() {
+    countdownInterval = setInterval(function() {
     countdownDuration--;
+
     displayCountdown();
     
     // Stop the countdown is the duration is reached
-    if (countdownDuration < stop) {
+    if (countdownDuration < 1) {
         clearInterval(countdownInterval);
 
         // delete deleteafter div
@@ -72,11 +78,16 @@ function timer(stop)
     }, 1000);
 }
 
+function stopTimer()
+{
+    clearInterval(countdownInterval);
+}
+
 function readyButton()
 {
     divDelete.style.display = "block";
     document.getElementById("displayButton").style.display = "none";
-    timer(1);
+    timer();
 }
 
 // END ROUND1

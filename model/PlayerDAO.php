@@ -31,10 +31,9 @@ class PlayerDAO
     }
 
     // Select a player
-    // in progress
     public function selectPlayer($pseudo)
     {
-        $request = $this->getDb()->prepare("SELECT * FROM Player WHERE pseudo = ?");
+        $request = $this->getDb()->prepare("SELECT * FROM Player WHERE BINARY pseudo = ?");
         $request->execute([$pseudo]);
 
         return $request->fetchAll();
@@ -44,7 +43,7 @@ class PlayerDAO
     // Return pseudo or false
     public function exists($pseudo)
     {
-        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE pseudo = ?");
+        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE BINARY pseudo = ?");
         $request->execute([$pseudo]);
 
         return $request->fetch();
@@ -66,7 +65,7 @@ class PlayerDAO
     // Check if the password matches the pseudo
     public function matches($password, $pseudo)
     {
-        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE (password = ? AND pseudo = ?)");
+        $request = $this->getDb()->prepare("SELECT pseudo FROM Player WHERE BINARY password = ? AND BINARY pseudo = ?");
         $request->execute([$password, $pseudo]);
 
         return $request->fetch();

@@ -31,6 +31,9 @@ session_start();
         <?php        
             require_once("controller/HomeController.php");
             require_once("controller/RoundsController.php");
+            require_once("model/GameDAO.php"); // ??
+            require_once("./model/BdPdoConnection.php"); //??
+
 
             // Management of controllers
             if(!isset($_GET["controller"]))
@@ -64,6 +67,7 @@ session_start();
             } 
 
             
+            
             switch($action) 
             {
                 // controlleur = home
@@ -72,6 +76,7 @@ session_start();
                     break;
                 case "registration":
                     $_SESSION["myPseudo"] = $_POST["r-pseudo"];
+                    $_SESSION["myGame"] = new GameDAO(BdPdoConnection::getConnection())->;
                     $controller->registration();
                     break;
                 case "authentication":
@@ -80,7 +85,10 @@ session_start();
                     break;
                 // controller = rounds
                 case "round1":
-                    $controller->saveData();
+                    $_SESSION["r1_tries"] = $_POST["r1_triesNb"];
+                    $_SESSION["r1_time"] = $_POST["r1_timeSpent"];
+                    $controller->r1_saveData();
+                    break;
             }
             // end action management
         ?>

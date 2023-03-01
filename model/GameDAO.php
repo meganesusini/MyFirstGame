@@ -28,5 +28,14 @@ class GameDAO
         $request = $this->getDb()->prepare("INSERT INTO Game (idP) VALUES (?)");
         $request->execute([$playerId]);
     }
+
+    // Select a game
+    public function selectGame($playerId)
+    {
+        $request = $this->getDb()->prepare("SELECT MAX(id), idP FROM Game WHERE idP = ?");
+        $request->execute([$playerId]);
+
+        return $request->fetchAll();
+    }
 }
 ?>

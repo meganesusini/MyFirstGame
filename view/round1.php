@@ -28,6 +28,10 @@ session_start();
     <h3>FIRST ROUND</h3>
     <p>GUESS A NUMBER</p>
     <p>The number to guess is between 0 and 100 included</p>
+    <!-- test -->
+    <?php
+        echo "Game nb : ".$_SESSION["myGame"];
+    ?>
     <div id="displayButton">
         <p>You have 1 minute, are you ready ?</p>
         <button onclick="readyButton();">Ready</button> <!-- start a timer (1min) -->
@@ -44,8 +48,9 @@ session_start();
     <span id="r1_clue"></span> 
 
     <!-- go to the next round -->
-    <form id="r1_next" action="./index.php?controller=rounds&action=round1">
-        <input type="text" name="triesNb" id="triesNb" value="">
+    <form method="post" id="r1_next" action="../index.php?controller=rounds&action=round1">
+        <input type="hidden" name="r1_triesNb" id="r1_triesNb">
+        <input type="hidden" name="r1_timeSpent" id="r1_timeSpent">
         <input type="submit" value="Next Round">
     </form>
 

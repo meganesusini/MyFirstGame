@@ -54,6 +54,10 @@ class HomeController
                     $playerId = $newPlayerDAO->selectPlayer($pseudo)[0]["id"];
                     $newGame = new Game($playerId);
                     $newGameDAO->addGame($newGame);
+                    $gameId = $newGameDAO->selectGame($playerId)[0]["id"];
+
+                    $_SESSION["myGame"] = $gameId;
+                    $_SESSION["myPseudo"] = $pseudo;
 
                     header('Location: view/round1.php');
                     exit();
@@ -91,7 +95,9 @@ class HomeController
                     $playerId = $newPlayerDAO->selectPlayer($pseudo)[0]["id"];
                     $newGame = new Game($playerId);
                     $newGameDAO->addGame($newGame);
-                    
+                    $gameId = $newGameDAO->selectGame($playerId)[0]["id"];
+
+                    $_SESSION["myGame"] = $gameId;
                     $_SESSION["myPseudo"] = $pseudo;
                     header('Location: ./view/round1.php');
                     exit();
