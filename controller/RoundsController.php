@@ -54,8 +54,8 @@ class RoundsController
     }
 
     public function r3_saveData() {
-        $timeSpent = $_POST["r2_timeSpent"];
-        $wordsNb = $_POST["r2_wordsNb"];
+        $timeSpent = $_POST["r3_timeSpent"];
+        $wordsNb = $_POST["r3_rightAnswers"];
 
         // Create a new round
         $newRoundDAO = new RoundDAO($this->connection);
@@ -64,12 +64,12 @@ class RoundsController
 
         $_SESSION["myRound"] = $newRoundDAO->getLastRound()[0]; 
 
-        // Create a new round2
-        $newRound2DAO = new Round2DAO($this->connection);
-        $newRound2 = new Round2($wordsNb, $timeSpent, $_SESSION["myRound"]);
-        $newRound2DAO->addRound2($newRound2);
+        // Create a new round3
+        $newRound3DAO = new Round3DAO($this->connection);
+        $newRound3 = new Round3($wordsNb, $timeSpent, $_SESSION["myRound"]);
+        $newRound3DAO->addRound3($newRound2);
        
-       header('Location: ./view/round3.php');
+       header('Location: ./view/ranking.php');
        exit();
     }
 }

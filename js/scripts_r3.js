@@ -145,26 +145,30 @@ function calculate(calculation, userAnswer)
 
 function seeResults()
 {
-    let tableHtml = "<thead><tr>";
-    let headers = ["CALCULATIONS", "USER_ANSWER", "ANSWER"]
     let rightAnswers = 0;
+    if (calculations.length != 0)
+    {
+        let tableHtml = "<thead><tr>";
+        let headers = ["CALCULATIONS", "USER_ANSWER", "ANSWER"]
 
-    for (let i = 0; i < 3; i++) {
-        tableHtml += "<th>" + headers[i] + "</th>";
-    }
-    tableHtml += "</tr></thead><tbody>";
-    for (let i = 0; i < calculations.length; i++) {
-        tableHtml += "<tr><td>" + calculations[i] + "</td>";
-        tableHtml += "<td>" + u_calcResults[i] + "</td>";
-        tableHtml += "<td>" + calcResults[i] + "</td></tr>";
-        
-        if (u_calcResults[i] == calcResults[i])
-        {
-            rightAnswers++;
+        for (let i = 0; i < 3; i++) {
+            tableHtml += "<th>" + headers[i] + "</th>";
         }
+        tableHtml += "</tr></thead><tbody>";
+        for (let i = 0; i < calculations.length; i++) {
+            tableHtml += "<tr><td>" + calculations[i] + "</td>";
+            tableHtml += "<td>" + u_calcResults[i] + "</td>";
+            tableHtml += "<td>" + calcResults[i] + "</td></tr>";
+            
+            if (u_calcResults[i] == calcResults[i])
+            {
+                rightAnswers++;
+            }
+        }
+        tableHtml += "</tbody>";
+        document.getElementById("r3_resTable").innerHTML = tableHtml;
     }
-    tableHtml += "</tbody>";
-    document.getElementById("r3_resTable").innerHTML = tableHtml;
+    
 
     document.getElementById("r3_sentence2").textContent = "Number of right answers = " + rightAnswers.toString();
     document.getElementById("r3_res-button").style.display="none";
