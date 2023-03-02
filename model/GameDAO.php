@@ -66,7 +66,7 @@ class GameDAO
     // Select all the games of a player
     public function getAllGamesFromPlayer($playerId)
     {
-        $request = $this->getDb()->prepare("SELECT * FROM Game WHERE id = ?");
+        $request = $this->getDb()->prepare("SELECT * FROM Game WHERE idP = ?");
         $request->execute([$playerId]);
 
         return $request->fetchAll();
