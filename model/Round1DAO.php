@@ -48,5 +48,12 @@ class Round1DAO
 
         return $request->fetch();
     }
+
+    // Delete a round1
+    public function deleteRound1($roundId)
+    {
+        $request = $this->getDb()->prepare("DELETE FROM Round1 WHERE idR = ?");
+        $request->execute([$roundId]);
+    }
 }
 ?>

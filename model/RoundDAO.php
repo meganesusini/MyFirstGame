@@ -20,7 +20,7 @@ class RoundDAO
         return $this->db;
     }
 
-    // Add a game
+    // Add a round
     public function addRound($newRound)
     {
         $gameId = $newRound->getGameId();
@@ -45,6 +45,13 @@ class RoundDAO
         $request->execute();
 
         return $request->fetch();
+    }
+
+    // Delete a round
+    public function deleteRound($roundId)
+    {
+        $request = $this->getDb()->prepare("DELETE FROM Round WHERE id = ?");
+        $request->execute([$roundId]);
     }
 }
 ?>

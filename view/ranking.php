@@ -13,6 +13,10 @@ require("../model/functions.php");
 </head>
 <body>
     <h2>There is the ranking of the best players</h2>
+    <?php
+    echo "TEST<br>";
+    displaysplayers();
+    ?>
     <h3>The best players of the game</h3>
     <?php
         displayBestPlayers();
@@ -33,6 +37,7 @@ require("../model/functions.php");
     <?php
         
         displayRankTable();
+        session_destroy();
     ?>
     </body>
     </html>

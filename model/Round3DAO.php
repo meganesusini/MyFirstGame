@@ -48,5 +48,15 @@ class Round3DAO
 
         return $request->fetch();
     }
+
+    // Check if a round3 exists
+    // in progress
+    public function exists($roundId)
+    {
+        $request = $this->getDb()->prepare("SELECT * FROM Round3 WHERE idR = ?");
+        $request->execute([$roundId]);
+
+        return $request->fetch();
+    }
 }
 ?>

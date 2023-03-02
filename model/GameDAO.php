@@ -38,6 +38,15 @@ class GameDAO
         return $request->fetchAll();
     }
 
+    // Select a game 2
+    public function selectGame2($gameId)
+    {
+        $request = $this->getDb()->prepare("SELECT * FROM Game WHERE id = ?");
+        $request->execute([$gameId]);
+
+        return $request->fetchAll();
+    }
+
     // Select the last game id
     public function getLastGame()
     {
@@ -45,6 +54,22 @@ class GameDAO
         $request->execute();
 
         return $request->fetch();
+    }
+
+    // Delete a game
+    public function deleteGame($gameId)
+    {
+        $request = $this->getDb()->prepare("DELETE FROM Game WHERE id = ?");
+        $request->execute([$gameId]);
+    }
+
+    // Select all the games of a player
+    public function getAllGamesFromPlayer($playerId)
+    {
+        $request = $this->getDb()->prepare("SELECT * FROM Game WHERE id = ?");
+        $request->execute([$playerId]);
+
+        return $request->fetchAll();
     }
 }
 ?>
