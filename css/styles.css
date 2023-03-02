@@ -8,6 +8,19 @@ border: 1px solid;
 
 td, th{
     width:80px;
+    text-align: center;
+}
+
+.rankTable {
+    width:1200px;
+}
+
+.bestPlayersRankTable, .roundsRankTable {
+    width: 600px;
+}
+
+.rankTable td, .rankTable th, .roundsRankTable td, .roundsRankTable th, .bestPlayersRankTable td, .bestPlayersRankTable th {
+    height: 40px;
 }
 
 #r2_timeUp, #r2_p-wordsToFind, form {
