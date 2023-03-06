@@ -59,7 +59,7 @@ class Round1DAO
     // Select the best round1
     public function rankingRound1()
     {
-        $request = $this->getDb()->prepare("SELECT DISTINCT(Player.pseudo), Round1.triesNb, Round1.timeSpent FROM Player JOIN Game ON Player.id = Game.idP JOIN Round ON Game.id = Round.idG JOIN Round1 ON Round.id = Round1.idR ORDER BY Round1.triesNb ASC; ");
+        $request = $this->getDb()->prepare("SELECT DISTINCT(Player.pseudo), Round1.triesNb, Round1.timeSpent FROM Player JOIN Game ON Player.id = Game.idP JOIN Round ON Game.id = Round.idG JOIN Round1 ON Round.id = Round1.idR ORDER BY Round1.triesNb ASC, Round1.timeSpent ASC; ");
         $request->execute();
 
         return $request->fetchAll();

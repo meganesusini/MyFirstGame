@@ -58,5 +58,14 @@ class Round3DAO
 
         return $request->fetch();
     }
+
+    // Select the best round3
+    public function rankingRound3()
+    {
+        $request = $this->getDb()->prepare("SELECT DISTINCT(Player.pseudo), Round3.rightAnswersNb, Round3.timeSpent FROM Player JOIN Game ON Player.id = Game.idP JOIN Round ON Game.id = Round.idG JOIN Round3 ON Round.id = Round3.idR ORDER BY Round3.rightAnswersNb DESC, Round3.timeSpent ASC; ");
+        $request->execute();
+
+        return $request->fetchAll();
+    }
 }
 ?>

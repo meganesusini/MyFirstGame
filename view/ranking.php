@@ -28,11 +28,6 @@ require("../model/displayRankings.php");
     <h3>Round3 ranking</h3>
     <?php
         displayRound3Rank();
-    ?>
-    <h3>The general ranking</h3>
-    <?php
-        
-        displayRankTable();
         session_destroy();
     ?>
     </body>

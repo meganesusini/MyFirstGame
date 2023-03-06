@@ -122,41 +122,6 @@
         return $playerGames;
     }
     
-    // Return the best round from a player
-    function getThePlayerBestRound($roundNb, $playerId)
-    {
-        global $newGameDAO, $newPlayerDAO, $newRoundDAO, $newRound1DAO, $newRound2DAO, $newRound3DAO;
-
-        // $allRoundsNb = array(); 
-        // $allRounds = array(); 
-        // $allGames = $newGameDAO->getAllGamesFromPlayer($playerId); 
-        // // store the rounds
-        // for ($i=0; $i<count($allGames); $i++)
-        // {
-        //     array_push($allRounds, $newRoundDAO->selectRound($allGames[$i]["id"])[0]);
-        // }
-        
-        // store the rounds nb 1/2/3
-        // for ($i=0; $i<count($allRounds); $i++)
-        // {
-            // Check the round used
-            switch ($roundNb)
-            {
-                case 1 :
-                    return $newRound1DAO->selectBestRound1($playerId)[0]; 
-                    break;
-                case 2 :
-                    return $newRound2DAO->selectBestRound2($playerId)[0]; 
-                    break;
-                case 3 :
-                    return $newRound3DAO->selectBestRound3($playerId)[0]; 
-                    break;
-            }
-            
-        // }
-
-
-    }
 
     // sorts a multidimensional array (points DESC & times ASC)
     function sortTwoDimensionalArray(&$array) {

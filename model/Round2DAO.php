@@ -55,5 +55,14 @@ class Round2DAO
         $request = $this->getDb()->prepare("DELETE FROM Round2 WHERE idR = ?");
         $request->execute([$roundId]);
     }
+
+    // Select the best round2
+    public function rankingRound2()
+    {
+        $request = $this->getDb()->prepare("SELECT DISTINCT(Player.pseudo), Round2.wordsNb, Round2.timeSpent FROM Player JOIN Game ON Player.id = Game.idP JOIN Round ON Game.id = Round.idG JOIN Round2 ON Round.id = Round2.idR ORDER BY Round2.wordsNb DESC, Round2.timeSpent ASC; ");
+        $request->execute();
+
+        return $request->fetchAll();
+    }
 }
 ?>
