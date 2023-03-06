@@ -41,7 +41,7 @@
     // round1 ranking
     function displayRound1Rank()
     {
-        global $newPlayerDAO, $newGameDAO, $newRoundDAO, $newRound1DAO, $newRound2DAO, $newRound3DAO, $players;
+        global $newRound1DAO;
 
         $tableHtml = "<table class='roundsRankTable'><thead><tr>";
         $headers = ["TOP", "USER NAME", "TIME", "TRIES"];
@@ -53,15 +53,40 @@
 
         $tableHtml .= "</tr></thead><tbody>";
 
-        for ($i = 0; $i < count($players); $i++) {
+        // store the ranking
+        $rankingRound1 = $newRound1DAO->rankingRound1();
+        $newRankingR1 = array();
+        // first : check the doubles
+        if (count($rankingRound1) > 1)
+        {
+            $pseudosArray = array();
+            for ($i=0; $i<count($rankingRound1); $i++)
+            {
+                if (in_array($rankingRound1[$i]["pseudo"], $pseudosArray))
+                {
+                    array_splice($rankingRound1, $i, 1);
+                }
+                else
+                {
+                    array_push($pseudosArray, $rankingRound1[$i]["pseudo"]);
+                }
+            }
+        }
+
+
+        for ($i=0; $i<count($rankingRound1); $i++)
+        {
+            if (!in_array($rankingRound1[$i]["pseudo"], $newRankingR1))
+            {
+                array_push($newRankingR1, array($rankingRound1[$i]["pseudo"], $rankingRound1[$i]["triesNb"], $rankingRound1[$i]["timeSpent"]));
+            }
+        }
+
+        for ($i = 0; $i < count($newRankingR1); $i++) {
             $tableHtml .= "<tr><td>" . strval($i+1) . "</td>"; // top
-            $tableHtml .= "<td>" . $players[$i]["pseudo"] . "</td>"; // user name
-            $gameId = $newGameDAO->selectGame($players[$i]["id"])[0]["MAX(id)"];
-            $roundId = $newRoundDAO->selectRound($gameId)[0]["id"];
-            $round1Time = $newRound1DAO->selectRound1($roundId)[0]["timeSpent"];
-            $tableHtml .= "<td>" . strval($round1Time) . " seconds</td>"; // round1 time
-            $round1Tries = $newRound1DAO->selectRound1($roundId)[0]["triesNb"]; // /15
-            $tableHtml .= "<td>" . strval($round1Tries) . " tries</td></tr>"; // round1 tries
+            $tableHtml .= "<td>" . $newRankingR1[$i][0] . "</td>"; // user name
+            $tableHtml .= "<td>" . strval($newRankingR1[$i][2]) . " seconds</td>"; // round1 time
+            $tableHtml .= "<td>" . strval($newRankingR1[$i][1]) . " tries</td></tr>"; // round1 tries
         }
         $tableHtml .= "</tbody></table>";
         echo $tableHtml;
