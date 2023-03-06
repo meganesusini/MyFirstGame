@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("../model/functions.php");
+require("../model/displayRankings.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
