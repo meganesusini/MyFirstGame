@@ -53,7 +53,7 @@ function timer()
 {
     pTimer.textContent = "1:00";
     // Define the countdown duration in seconds
-    countdownDuration = 2;
+    countdownDuration = 60;
 
     // Definition of the function to display the countdown
     function displayCountdown() {

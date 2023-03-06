@@ -45,8 +45,8 @@
                         if (count($newRound1DAO->selectRound1($roundId)) == 0)
                         {
                             // if not > delete round > game
-                            $newRoundDAO->deleteRound($roundId);
-                            $newGameDAO->deleteGame($gameId);
+                            // $newRoundDAO->deleteRound($roundId);
+                            // $newGameDAO->deleteGame($gameId);
                         }
                         else
                         {
@@ -54,9 +54,9 @@
                             if (count($newRound2DAO->selectRound2($roundId)) == 0)
                             {
                                 // if not > delete round1 > round > game
-                                $newRound1DAO->deleteRound1($roundId);
-                                $newRoundDAO->deleteRound($roundId);
-                                $newGameDAO->deleteGame($gameId);
+                                // $newRound1DAO->deleteRound1($roundId);
+                                // $newRoundDAO->deleteRound($roundId);
+                                // $newGameDAO->deleteGame($gameId);
                             }
                             else
                             {
@@ -64,10 +64,10 @@
                                 if (count($newRound3DAO->selectRound3($roundId)) == 0)
                                 {
                                     // if not > delete round2 > round1 > round > game
-                                    $newRound2DAO->deleteRound2($roundId);
-                                    $newRound1DAO->deleteRound1($roundId);
-                                    $newRoundDAO->deleteRound($roundId);
-                                    $newGameDAO->deleteGame($gameId);
+                                    // $newRound2DAO->deleteRound2($roundId);
+                                    // $newRound1DAO->deleteRound1($roundId);
+                                    // $newRoundDAO->deleteRound($roundId);
+                                    // $newGameDAO->deleteGame($gameId);
                                 }
                                 else
                                 {

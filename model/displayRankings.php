@@ -7,14 +7,36 @@
     {
         global $players, $newRoundDAO;
 
-        $bestPlayers_players = array();
-        $bestPlayers_points = array();
-        $bestPlayers_times = array();
-        for ($i=0; $i<count($players); $i++)
+        $bestPlayers_players = array(); // contains all the pseudos
+        $bestPlayers_points = array(); // contains all the total points
+        $bestPlayers_times = array(); // contains all the total times
+        $bestPlayers_total = array(); // contains all the total scores
+
+        // store the ranking
+        $bestRank = $newRoundDAO->getAllMaxScores();
+        $bestRank2 = $newRoundDAO->getAllMaxScores2();
+        $newBestRank = array();
+        // first : check the doubles
+        if (count($bestRank) > 1)
         {
-            array_push($bestPlayers_players, $newRoundDAO->getMaxScoreFromPlayer($players[$i]["id"])[0]["pseudo"]);
-            array_push($bestPlayers_points, $newRoundDAO->getMaxScoreFromPlayer($players[$i]["id"])[0]["totalPoints"]);
-            array_push($bestPlayers_times, $newRoundDAO->getMaxScoreFromPlayer($players[$i]["id"])[0]["totalTimes"]);
+            $pseudosArray = array(); // array of doubles
+            for ($i=0; $i<count($bestRank); $i++)
+            {
+                // if not doubles
+                if (!(in_array($bestRank[$i]["pseudo"], $pseudosArray)))
+                {
+                    if ($newRoundDAO->getAllMaxScores()[$i]["triesNb"] > 15)
+                    {
+                        array_push($newBestRank, array($bestRank[$i]["pseudo"], $bestRank[$i]["totalPoints"], $bestRank[$i]["totalTimes"]));
+                    }
+                    else
+                    {
+                        array_push($newBestRank, array($bestRank2[$i]["pseudo"], $bestRank2[$i]["totalPoints"], $bestRank2[$i]["totalTimes"]));
+                    }
+                    array_push($pseudosArray, $bestRank[$i]["pseudo"]);
+                    
+                }
+            }
         }
     
         // displays the ranking
@@ -29,9 +51,9 @@
 
         for ($i = 0; $i < count($players); $i++) {
             $tableHtml .= "<tr><td>" . strval($i+1) . "</td>"; // top
-            $tableHtml .= "<td>" . $bestPlayers_players[$i] . "</td>"; // user name
-            $tableHtml .= "<td>" . strval($bestPlayers_times[$i]) . " seconds</td>"; // total time
-            $tableHtml .= "<td>" . strval($bestPlayers_points[$i]) . " points</td></tr>"; // total points
+            $tableHtml .= "<td>" . $newBestRank[$i][0] . "</td>"; // user name
+            $tableHtml .= "<td>" . strval($newBestRank[$i][2]) . " seconds</td>"; // total time
+            $tableHtml .= "<td>" . strval($newBestRank[$i][1]) . " points</td></tr>"; // total points
         }
 
         $tableHtml .= "</tbody></table>";
