@@ -26,63 +26,62 @@
         $allPlayers = $newPlayerDAO->getAllPlayers();
         $allPlayers2 = array();
 
-        for ($i=0; $i<count($allPlayers); $i++)
+        // check if a player already played a game 
+        for ($i=0; $i<count($allPlayers); $i++) // foreach player
         {
-            // check if a player already played a game
-            // check if the player has a game > a round > a round3
-            if (count($newGameDAO->getAllGamesFromPlayer($allPlayers[$i]["id"])) != 0)
+            // check if the player played at least one game
+            $gamesNb = count($newGameDAO->getAllGamesFromPlayer($allPlayers[$i]["id"]));
+            if ($gamesNb != 0)
             {
-                $gameId = $newGameDAO->getAllGamesFromPlayer($allPlayers[$i]["id"])[0]["id"];
-                if (count($newRoundDAO->selectRound($gameId)) != 0)
+                // if yes > check how many he played
+                for ($j=0; $j<$gamesNb; $j++) // foreach game
                 {
-                    $roundId = $newRoundDAO->selectRound($gameId)[0]["id"];
-                    if (count($newRound3DAO->selectRound3($roundId)) != 0)
+                    $gameId = $newGameDAO->getAllGamesFromPlayer($allPlayers[$i]["id"])[$j]["id"];
+                    // check if a round exists
+                    if (count($newRoundDAO->selectRound($gameId)) != 0)
                     {
-                        $gameId = getThePlayerBestGame($allPlayers[$i]["id"])["id"]; // error
-                        // check if a round exists
-                        if (count($newRoundDAO->selectRound($gameId)) == 0)
+                        $roundId = $newRoundDAO->selectRound($gameId)[0]["id"];
+                        // check if a round1 exists
+                        if (count($newRound1DAO->selectRound1($roundId)) == 0)
                         {
-                            // if not > delete game
+                            // if not > delete round > game
+                            $newRoundDAO->deleteRound($roundId);
                             $newGameDAO->deleteGame($gameId);
                         }
-                        else 
+                        else
                         {
-                            $roundId = $newRoundDAO->selectRound($gameId)[0]["id"];
-                            // check if a round1 exists
-                            if (count($newRound1DAO->selectRound1($roundId)) == 0)
+                            // check if a round2 exists
+                            if (count($newRound2DAO->selectRound2($roundId)) == 0)
                             {
-                                // if not > delete round > game
+                                // if not > delete round1 > round > game
+                                $newRound1DAO->deleteRound1($roundId);
                                 $newRoundDAO->deleteRound($roundId);
                                 $newGameDAO->deleteGame($gameId);
                             }
                             else
                             {
-                                // check if a round2 exists
-                                if (count($newRound2DAO->selectRound2($roundId)) == 0)
+                                // check if a round3 exists
+                                if (count($newRound3DAO->selectRound3($roundId)) == 0)
                                 {
-                                    // if not > delete round1 > round > game
+                                    // if not > delete round2 > round1 > round > game
+                                    $newRound2DAO->deleteRound2($roundId);
                                     $newRound1DAO->deleteRound1($roundId);
                                     $newRoundDAO->deleteRound($roundId);
                                     $newGameDAO->deleteGame($gameId);
                                 }
                                 else
                                 {
-                                    // check if a round3 exists
-                                    if (count($newRound3DAO->selectRound3($roundId)) == 0)
-                                    {
-                                        // if not > delete round2 > round1 > round > game
-                                        $newRound2DAO->deleteRound2($roundId);
-                                        $newRound1DAO->deleteRound1($roundId);
-                                        $newRoundDAO->deleteRound($roundId);
-                                        $newGameDAO->deleteGame($gameId);
-                                    }
-                                    else
+                                    if (!in_array($allPlayers[$i], $allPlayers2))
                                     {
                                         array_push($allPlayers2, $allPlayers[$i]);
                                     }
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        $newGameDAO->deleteGame($gameId);
                     }
                 }
             }
@@ -91,10 +90,51 @@
         return $allPlayers2;
     }
 
-    // Return the max total points and time of a player
+    // Return a game from a player with the max total points and min total time
+    // function getThePlayerBestGame($playerId)
+    // {
+    //     global $newGameDAO;
+    //     // store all the games of the player
+    //     $allGames = $newGameDAO->getAllGamesFromPlayer($playerId);
+    //     // store all the total points of the player
+    //     $allTotalPoints = array();
+    //     for ($i=0; $i<count($allGames); $i++)
+    //     {
+    //         $totalPoints = getTotalPointsFromGame($allGames[$i]["id"]);
+    //         array_push($allTotalPoints, $totalPoints);
+    //     }
+    //     // store all the total time of the player
+    //     $allTotalTimes = array();
+    //     for ($i=0; $i<count($allGames); $i++)
+    //     {
+    //         $totalTimes = getTotalTimesFromGame($allGames[$i]["id"]);
+    //         array_push($allTotalTimes, $totalTimes);
+    //     }
+    //     // store all the index of the max total points in an array
+    //     $maxTotalPointsIndex = getMaxNumber($allTotalPoints);
+    //     // if count(array) == 1 -> $theBestPlayerGame = a game
+    //     if (count($maxTotalPointsIndex) == 1)
+    //     {
+    //         $theBestPlayerGame = $newGameDAO->selectGame2($allGames[$maxTotalPointsIndex[0]]["id"]);
+    //     }
+    //     else
+    //     {
+    //         // else -> store all the total times with the same index of the max total points
+    //         $allTotalTimes2 = array();
+    //         for ($i=0; $i<count($maxTotalPointsIndex); $i++)
+    //         {
+    //             $totalTimes = getTotalTimesFromGame($allGames[$maxTotalPointsIndex[$i]]["id"]);
+    //             array_push($allTotalTimes2, $totalTimes);
+    //         }
+    //         $minTotalTimesIndex = getMinNumber($allTotalTimes2)[0];
+    //         $theBestPlayerGame = $newGameDAO->selectGame2($allGames[$minTotalTimesIndex[0]]["id"]);
+    //     }
+    //     return $theBestPlayerGame[0];
+    // }
+
     function getThePlayerBestGame($playerId)
     {
-        global $newGameDAO;
+        global $newGameDAO, $newPlayerDAO;
         // store all the games of the player
         $allGames = $newGameDAO->getAllGamesFromPlayer($playerId);
         // store all the total points of the player
@@ -111,27 +151,24 @@
             $totalTimes = getTotalTimesFromGame($allGames[$i]["id"]);
             array_push($allTotalTimes, $totalTimes);
         }
-        // store all the index of the max total points in an array
-        $maxTotalPointsIndex = getMaxNumber($allTotalPoints);
-        // if count(array) == 1 -> $theBestPlayerGame = a game
-        if (count($maxTotalPointsIndex) == 1)
+        // store all the scores
+        $playerGames = array();
+        for ($i=0; $i<count($allGames); $i++)
         {
-            $theBestPlayerGame = $newGameDAO->selectGame2($allGames[$maxTotalPointsIndex[0]]["id"]);
+            array_push($playerGames, array($newPlayerDAO->selectPlayer2($playerId)[0], $allTotalPoints[$i], $allTotalTimes[$i]));
         }
-        else
-        {
-            // else -> store all the total times with the same index of the max total points
-            $allTotalTimes2 = array();
-            for ($i=0; $i<count($maxTotalPointsIndex); $i++)
-            {
-                echo "hello2";
-                $totalTimes = getTotalTimesFromGame($allGames[$maxTotalPointsIndex[$i]]["id"]);
-                array_push($allTotalTimes2, $totalTimes);
-            }
-            $minTotalTimesIndex = getMinNumber($allTotalTimes2)[0];
-            $theBestPlayerGame = $newGameDAO->selectGame2($allGames[$minTotalTimesIndex[0]]["id"]);
-        }
-        return $theBestPlayerGame[0];
+
+        sortTwoDimensionalArray($playerGames);
+
+        return $playerGames;
+    }
+
+    // sorts a multidimensional array (points DESC & times ASC)
+    function sortTwoDimensionalArray(&$array) {
+        $firstColumn = array_column($array, 0);
+        $secondColumn = array_column($array, 1);
+        $thirdColumn = array_column($array, 2);
+        array_multisort($firstColumn, $secondColumn, SORT_DESC, $thirdColumn, SORT_ASC, $array);
     }
 
     // Returns the total points from a game
@@ -209,6 +246,17 @@
     {
         global $newPlayerDAO, $newGameDAO, $newRoundDAO, $newRound1DAO, $newRound2DAO, $newRound3DAO, $players;
 
+        $bestPlayers = array();
+        for ($i=0; $i<count($players); $i++)
+        {
+            array_push($bestPlayers, getThePlayerBestGame($players[$i]["id"])[0][0]);
+        }
+
+        for ($i=0; $i<count($bestPlayers); $i++)
+        {
+            echo $bestPlayers[$i]["pseudo"] . "<br>";
+        }
+    
         $tableHtml = "<table class='bestPlayersRankTable'><thead><tr>";
         $headers = ["TOP", "USER NAME", "TOTAL TIME", "TOTAL POINTS /32"];
 
