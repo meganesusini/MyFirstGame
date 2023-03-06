@@ -53,5 +53,14 @@ class RoundDAO
         $request = $this->getDb()->prepare("DELETE FROM Round WHERE id = ?");
         $request->execute([$roundId]);
     }
+
+    // Select the max scores of a player
+    public function getMaxScoreFromPlayer($playerId)
+    {
+        $request = $this->getDb()->prepare("SELECT Player.pseudo, (15 - Round1.triesNb + Round2.wordsNb + Round3.rightAnswersNb) AS totalPoints, (Round1.timeSpent + Round2.timeSpent + Round3.timeSpent) AS totalTimes FROM Round INNER JOIN Round1 ON Round.id = Round1.idR INNER JOIN Round2 ON Round.id = Round2.idR INNER JOIN Round3 ON Round.id = Round3.idR INNER JOIN Game ON Round.idG = Game.id INNER JOIN Player ON Game.idP = Player.id WHERE Round.idG IN (SELECT id FROM Game WHERE idP = ?) ORDER BY totalPoints DESC, totalTimes ASC;");
+        $request->execute([$playerId]);
+
+        return $request->fetchAll();
+    }
 }
 ?>

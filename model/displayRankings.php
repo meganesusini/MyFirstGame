@@ -5,16 +5,16 @@
     // the best players of the game
     function displayBestPlayers()
     {
-        global $players;
+        global $players, $newRoundDAO;
 
         $bestPlayers_players = array();
         $bestPlayers_points = array();
         $bestPlayers_times = array();
         for ($i=0; $i<count($players); $i++)
         {
-            array_push($bestPlayers_players, getThePlayerBestGame($players[$i]["id"])[0][0]);
-            array_push($bestPlayers_points, getThePlayerBestGame($players[$i]["id"])[0][1]);
-            array_push($bestPlayers_times, getThePlayerBestGame($players[$i]["id"])[0][2]);
+            array_push($bestPlayers_players, $newRoundDAO->getMaxScoreFromPlayer($players[$i]["id"])[0]["pseudo"]);
+            array_push($bestPlayers_points, $newRoundDAO->getMaxScoreFromPlayer($players[$i]["id"])[0]["totalPoints"]);
+            array_push($bestPlayers_times, $newRoundDAO->getMaxScoreFromPlayer($players[$i]["id"])[0]["totalTimes"]);
         }
     
         // displays the ranking
@@ -29,7 +29,7 @@
 
         for ($i = 0; $i < count($players); $i++) {
             $tableHtml .= "<tr><td>" . strval($i+1) . "</td>"; // top
-            $tableHtml .= "<td>" . $bestPlayers_players[$i]["pseudo"] . "</td>"; // user name
+            $tableHtml .= "<td>" . $bestPlayers_players[$i] . "</td>"; // user name
             $tableHtml .= "<td>" . strval($bestPlayers_times[$i]) . " seconds</td>"; // total time
             $tableHtml .= "<td>" . strval($bestPlayers_points[$i]) . " points</td></tr>"; // total points
         }
@@ -44,6 +44,8 @@
     // ROUND1
     function displayRound1Rank()
     {
+        global $newRound1DAO;
+
         // store the ranking
         $rankingRound1 = $newRound1DAO->rankingRound1();
         $newRankingR1 = array();
@@ -89,6 +91,8 @@
     // ROUND2
     function displayRound2Rank()
     {      
+        global $newRound2DAO;
+
         // store the ranking
         $rankingRound2 = $newRound2DAO->rankingRound2();
         $newRankingR2 = array();
@@ -131,6 +135,8 @@
     // ROUND3
     function displayRound3Rank()
     {
+        global $newRound3DAO;
+        
         // store the ranking
         $rankingRound3 = $newRound3DAO->rankingRound3();
         $newRankingR3 = array();
