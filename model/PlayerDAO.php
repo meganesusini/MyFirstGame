@@ -88,5 +88,14 @@ class PlayerDAO
 
         return $request->fetchAll();
     }
+
+    // Retrive a pwd from a player
+    public function getPwdFromPlayer($pseudo)
+    {
+        $request = $this->getDb()->prepare("SELECT password FROM Player WHERE BINARY pseudo = ?");
+        $request->execute([$pseudo]);
+
+        return $request->fetch();
+    }
 }
 ?>

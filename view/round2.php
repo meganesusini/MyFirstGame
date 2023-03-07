@@ -34,7 +34,7 @@ session_start();
             <p>You have 1 minute maximum.</p>
             <span id="r2_timer"></span>
             <p>Write each word, one by one.</p>
-            <input type="text" id="r2_input-user-word" autofocus> <!-- input > user write a word -->
+            <input type="text" id="r2_input-user-word" maxlength = "15" autofocus> <!-- input > user write a word -->
             <button onclick="displayUserWords();">Submit</button> <!-- button which displays each word written by the user -->
             <p id="r2_display-user-word"></p> <!-- displays a word -->
         </div>

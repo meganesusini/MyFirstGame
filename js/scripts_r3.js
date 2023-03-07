@@ -13,6 +13,7 @@ let inputUserAnswer = document.getElementById("r3_user-answer");
 let spanTimer = document.getElementById("r3_timer");
 let divUser = document.getElementById("r3_user");
 let spanCalc = document.getElementById("r3_calc");
+let errorMsg = document.getElementById("r3_error-msg");
 
 let countdownInterval, countdownDuration;
 
@@ -25,6 +26,7 @@ function readyButton()
         displayCalc();
         // remove div#ready
         document.getElementById("r3_ready").style.display="none";
+        
 }
 
 function timer()
@@ -77,7 +79,8 @@ function displayCalc()
     symbol = symbols[calcNb-1];
 
     spanCalc.textContent = randomNb1.toString() + " " + symbol.toString() + " " + randomNb2.toString();
-    divUser.style.display="block";   
+    divUser.style.display="block"; 
+    inputUserAnswer.focus();  
 }
 
 inputUserAnswer.addEventListener('keydown', function(event) 
@@ -90,11 +93,13 @@ inputUserAnswer.addEventListener('keydown', function(event)
 
 function calculate(calculation, userAnswer)
 {
+    inputUserAnswer.value = inputUserAnswer.value.trim();
+    errorMsg.textContent = "";
     if(inputUserAnswer.value.length != 0)
     {
         if (isNaN(inputUserAnswer.value))
         {
-            document.getElementById("r3_error-msg").textContent = "ERROR : You answer must be a number.";
+            errorMsg.textContent = "ERROR : You answer must be a number.";
         }
         else
         {

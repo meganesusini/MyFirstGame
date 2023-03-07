@@ -22,9 +22,6 @@ class HomeController
 
         if (!empty($pseudo) && !empty($password))
         {
-            // hash pwd
-            $pwd = password_hash($password, PASSWORD_DEFAULT);
-
             // Connection to the database
             $newPlayerDAO = new PlayerDAO($this->connection);
 
@@ -43,6 +40,8 @@ class HomeController
                 // If the 2 conditions = ok
                 else
                 {
+                    // hash pwd
+                    $password = password_hash($password, PASSWORD_DEFAULT);
                     // Add the player to the database
                     $newPlayer = new Player($pseudo, $password);
                     $newPlayerDAO->addPlayer($newPlayer);
@@ -80,8 +79,16 @@ class HomeController
             else
             {
                 // Check if the password matches the pseudo
-                if ($newPlayerDAO->matches($password, $pseudo) == false)
+                // if ($newPlayerDAO->matches($password, $pseudo) == false)
+                // {
+                //     echo "<script>document.getElementById('login-errormsg').textContent = \"Your password is not correct.\";</script>";
+                // }
+                $hashed_password = $newPlayerDAO->getPwdFromPlayer($pseudo)["password"];
+                $t = "test";
+                // echo "<script>document.getElementById('login-errormsg').textContent = " . $hashed_password . ";</script>";
+                if (password_verify($password, $hashed_password) == false)
                 {
+                    // echo password_verify($password, $hashed_password);
                     echo "<script>document.getElementById('login-errormsg').textContent = \"Your password is not correct.\";</script>";
                 }
                 // If the 2 conditions = ok

@@ -14,16 +14,16 @@ session_start();
 
         <form method="post" action="index.php?controller=home&action=registration">
             <h3>New ? Sign on :</h3>
-            <label for="">Pseudo </label><input type="text" name="r-pseudo">
-            <label for="">Password </label><input type="text" name="r-password">
+            <label for="">Pseudo </label><input type="text" name="r-pseudo" maxlength="20">
+            <label for="">Password </label><input type="text" name="r-password" maxlength="20">
             <input type="submit" name="submit_pseudo" value="Submit">
             <p id="signon-errormsg"></p>
         </form>  
 
         <form method="post" action="index.php?controller=home&action=authentication">
             <h3>Otherwise, write your pseudo :</h3>
-            <label for="">Pseudo </label><input type="text" name="a-pseudo">
-            <label for="">Password </label><input type="text" name="a-password">
+            <label for="">Pseudo </label><input type="text" name="a-pseudo" maxlength="20">
+            <label for="">Password </label><input type="text" name="a-password" maxlength="20">
             <input type="submit" name="submit_pseudo" value="Submit">
             <p id="login-errormsg"></p>
         </form>  
@@ -63,8 +63,6 @@ session_start();
                 $action = $_GET["action"];
             } 
 
-            
-            
             switch($action) 
             {
                 // controlleur = home
@@ -89,6 +87,7 @@ session_start();
                     break;
             }
             // end action management
+            
         ?>
     </body>
 </html>

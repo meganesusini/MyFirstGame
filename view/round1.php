@@ -36,7 +36,7 @@ session_start();
     <p id="r1_timer"></p>
 
     <div id="r1_deleteAfter">
-        <input type="text" autofocus id="r1_nb">
+        <input type="text" autofocus id="r1_nb" maxlength="3">
         <!-- onclick button > displays if the user found the right number -->
         <button onclick="findTheNb(document.getElementById('r1_nb').value, randomNb)">Enter</button>
     </div>

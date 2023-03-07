@@ -12,30 +12,41 @@ let countdownInterval, countdownDuration;
 // onclick button > displays if the user found the right number
 function findTheNb(userNb, nbToFind)
 {
-    if (userNb == nbToFind) 
+    inputNb.value = inputNb.value.trim();
+    if(inputNb.value.length != 0)
     {
-        spanClue.textContent = "You are right ! The number is " + nbToFind.toString();
-        divDelete.style.display="none";
-        document.getElementById("r1_next").style.display="block";
+        if (!isNaN(inputNb.value))
+        {
+            if (userNb == nbToFind) 
+            {
+                spanClue.textContent = "You are right ! The number is " + nbToFind.toString();
+                divDelete.style.display="none";
+                document.getElementById("r1_next").style.display="block";
 
-        // stop the timer > save the time spent > save the nb of tries
-        stopTimer();
-        document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
-        document.getElementById("r1_triesNb").value = triesNb+1;
-        document.getElementById("r1_found").value = "yes";
-        pTimer.style.display = "none";
-        
+                // stop the timer > save the time spent > save the nb of tries
+                stopTimer();
+                document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
+                document.getElementById("r1_triesNb").value = triesNb+1;
+                document.getElementById("r1_found").value = "yes";
+                pTimer.style.display = "none";
+                
+            }
+            else if (userNb > nbToFind)
+            {
+                spanClue.textContent = "less";
+            }
+            else
+            {
+                spanClue.textContent = "more";
+            }
+            triesNb++;
+        }
+        else
+        {
+            spanClue.textContent = "ERROR : You must enter a number."
+        }
     }
-    else if (userNb > nbToFind)
-    {
-        spanClue.textContent = "less";
-    }
-    else
-    {
-        spanClue.textContent = "more";
-    }
-    triesNb++;
-    inputNb.value ="";
+    inputNb.value = "";
 }
 
 // keydown enter > displays if the user found the right number
@@ -43,15 +54,13 @@ inputNb.addEventListener('keydown', function(event)
 {
     if (event.key === 'Enter') 
     {
-        if(inputNb.value.length != 0)
-        {
-            findTheNb(inputNb.value, randomNb);
-        }
+        findTheNb(inputNb.value, randomNb);
     }
 });
 
 function timer()
 {
+    inputNb.focus();
     pTimer.textContent = "1:00";
     // Define the countdown duration in seconds
     countdownDuration = 60;

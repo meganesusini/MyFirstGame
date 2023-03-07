@@ -17,6 +17,7 @@ function readyButton()
     document.getElementById("readyButton").style.display = "none";
     displayLittleTimer();
     displayTable("r2_tableId");
+    // inputUserWord.focus();
 }
 
 // displays array with all the words to memorize and remove html elements
@@ -49,6 +50,7 @@ function displayLittleTimer()
 
 function displayTimer()
 {
+    inputUserWord.focus();
     timer.textContent = "1:00";
     // Define the countdown duration in seconds
     countdownDuration = 60;
@@ -84,21 +86,7 @@ inputUserWord.addEventListener('keydown', function(event)
 {
     if (event.key === 'Enter') 
     {
-        inputUserWord.value = inputUserWord.value.trim();
-        if(inputUserWord.value.length != 0)
-        {            
-            // error if the user entered a word which was already entered before
-            if (userWordsArray.includes(inputUserWord.value)) {
-                displayUserWord.textContent = "ERROR : You have already written this word.";
-            // displays an array with the words entered by the user
-            } else {
-                displayUserWord.textContent = inputUserWord.value;
-                userWordsArray.push(inputUserWord.value);
-                displayTable("r2_userTable");
-            }
-
-            inputUserWord.value = "";
-        }
+        displayUserWords();
     }
 });
 
@@ -120,9 +108,12 @@ function displayUserWords()
         }
 
         inputUserWord.value = "";
+        
     }
 }
-
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("r2_userTable").focus();
+  });
 // displays the array with the words entered by the user
 // or the array with all the words to memorize 
 function displayTable(tableId) 
@@ -155,39 +146,6 @@ function displayTable(tableId)
                 tableHtml += "<td>" + userWordsArray[i] + "</td>";
             }
         }
-        // if (userWordsArray.length < 7)
-        // {
-        //     for (let i = 0; i < 7; i++) 
-        //     {
-        //         if (i<userWordsArray.length)
-        //         {
-        //             tableHtml += "<td>" + userWordsArray[i] + "</td>";
-        //         }
-        //         else
-        //         {
-        //             tableHtml += "<td> </td>";
-        //         }
-        //     }
-        // }
-        // else if (userWordsArray.length < 14)
-        // {
-        //     for (let i = 0; i < 7; i++) 
-        //     {
-        //         tableHtml += "<td>" + userWordsArray[i] + "</td>";
-        //         tableHtml += "</tr><tr>";
-        //     }
-        //     for (let i = 7; i < 14; i++) 
-        //     {
-        //         if (i<userWordsArray.length)
-        //         {
-        //             tableHtml += "<td>" + userWordsArray[i] + "</td>";
-        //         }
-        //         else
-        //         {
-        //             tableHtml += "<td> </td>";
-        //         }
-        //     }   
-        // }
     }
     // create the array with all the words
     else

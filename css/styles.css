@@ -11,6 +11,10 @@ td, th{
     text-align: center;
 }
 
+#r2_userTable td {
+    width : 50px;
+}
+
 .rankTable {
     width:1200px;
 }
