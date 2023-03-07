@@ -1,4 +1,4 @@
-#r3_user, #r3_results, form, #r1_guess_nb {
+#r3_user, #r3_results, form, #r1_guess_nb, #r2_memorizeIn10Seconds, #r2_writeTheWords, #r2_seeTheResults, #r2_nextRound {
     display:none;
 }
 
@@ -25,9 +25,4 @@ td, th{
 
 .rankTable td, .rankTable th, .roundsRankTable td, .roundsRankTable th, .bestPlayersRankTable td, .bestPlayersRankTable th {
     height: 40px;
-}
-
-#r2_timeUp, #r2_p-wordsToFind, form {
-    display:none;
-    margin-top:0;
 }

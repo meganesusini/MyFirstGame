@@ -10,13 +10,14 @@ require_once("./model/RankingDAO.php");
 class RoundsController 
 {
     private $connection;
-    // private $newRoundDAO, $newRound1DAO, $newRound2DAO, $newRound3DAO;
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->connection = BdPdoConnection::getConnection();
     }
 
-    public function r1_saveData() {
+    public function r1_saveData() 
+    {
         $timeSpent = $_POST["r1_timeSpent"];
         $triesNb = $_POST["r1_triesNb"];
         $found =$_POST["r1_found"];
@@ -28,16 +29,18 @@ class RoundsController
 
         $_SESSION["myRound"] = $newRoundDAO->getLastRound()[0]; 
 
-        // Create a new round1
+        // Create a new round1 and add it
         $newRound1DAO = new Round1DAO($this->connection);
         $newRound1 = new Round1($triesNb, $timeSpent, $found, $_SESSION["myRound"]);
         $newRound1DAO->addRound1($newRound1);
        
        header('Location: ./view/round2.php');
        exit();
+
     }
 
-    public function r2_saveData() {
+    public function r2_saveData() 
+    {
         $timeSpent = $_POST["r2_timeSpent"];
         $wordsNb = $_POST["r2_wordsNb"];
 
@@ -46,11 +49,13 @@ class RoundsController
         $newRound2 = new Round2($wordsNb, $timeSpent, $_SESSION["myRound"]);
         $newRound2DAO->addRound2($newRound2);
        
-       header('Location: ./view/round3.php');
-       exit();
+        header('Location: ./view/round3.php');
+        exit();
+
     }
 
-    public function r3_saveData() {
+    public function r3_saveData() 
+    {
         $timeSpent = $_POST["r3_timeSpent"];
         $wordsNb = $_POST["r3_rightAnswers"];
 
@@ -78,16 +83,20 @@ class RoundsController
         $r2_words = $thisRound2["wordsNb"];
         $r3_rightAnswers = $thisRound3["rightAnswersNb"];
         $r1_found = $thisRound1["found"];
+
         if ($r1_tries > 15)
         {
             $r1_tries = 15;
         }
+
         $totalPoints = 15 - $r1_tries + $r2_words + $r3_rightAnswers;
         $newRanking = new Ranking($pseudo, $totalTimes, $totalPoints, $r1_time, $r1_tries, $r1_found, $r2_time, $r2_words, $r3_time, $r3_rightAnswers, $_SESSION["myRound"]);
         $newRankingDAO->addRanking($newRanking);
 
        header('Location: ./view/ranking.php');
        exit();
+
     }
+
 }
 ?>

@@ -15,43 +15,43 @@ session_start();
     <h3>SECOND ROUND</h3>
     <p>MEMORIZE ALL THE WORDS</p>
 
-    <?php
-        $seconds = 10;
-        echo '<p>You have '.$seconds.' seconds to memorize all the words you can.</p>';
-    ?>
+    <p>You have 10 seconds to memorize all the words you can.</p>
 
-    <div id="r2_ready">
+    <div id="r2_readyButton">
         <p>Are you ready ? Press the button !</p>
-        <button id="readyButton" onclick="readyButton();">Ready</button> <!-- displays the timer and the array with the words to memorize -->
-        <span id="r2_little_timer"></span> <!-- displays the timer -->
-        <table id="r2_tableId"></table> <!-- displays the array with the words to memorize -->
+        <button onclick="readyButton();">Ready</button> <!-- displays the timer and the array with the words to memorize -->
     </div>
 
-    <div id="r2_timeUp">
+    <div id="r2_memorizeIn10Seconds">
+        <span id="r2_little_timer"></span> 
+        <table class="r2_arrayToMemorize"></table> 
+    </div>
+    
+    <div id="r2_writeTheWords">
 
-        <div id="r2_timeUp1">
-            <p>Time up! Write all the words you have memorized.</p>
-            <p>You have 1 minute maximum.</p>
-            <span id="r2_timer"></span>
-            <p>Write each word, one by one.</p>
-            <input type="text" id="r2_input-user-word" maxlength = "15" autofocus> <!-- input > user write a word -->
-            <button onclick="displayUserWords();">Submit</button> <!-- button which displays each word written by the user -->
-            <p id="r2_display-user-word"></p> <!-- displays a word -->
-        </div>
+        <p>Time up! Write all the words you have memorized.</p>
+        <p>You have 1 minute maximum.</p>
+        <span id="r2_timer"></span>
+        <p>Write each word, one by one.</p>
+        <input type="text" id="r2_inputUserWord" maxlength = "15" autofocus> <!-- input > user write a word -->
+        <button onclick="displayUserWords();">Submit</button> <!-- button which displays each word written by the user -->
+        <p id="r2_displayUserWord"></p> <!-- displays a word -->
 
-        <table id="r2_userTable"></table> <!-- displays all the words wrote by the user -->
+        <table class="r2_userTable"></table> <!-- displays all the words wrote by the user -->
 
-        <div id="r2_timeUp2">
-            <p>If you have finished, press the Terminate button.</p>
-            <button onclick="terminateButton();">Terminate</button> <!-- button which displays the array with all the words to memorize -->
-        </div>
+        <p>If you have finished, press the Terminate button.</p>
+        <button onclick="terminateButton();">Terminate</button> <!-- button which displays the array with all the words to memorize -->
+    </div>
 
-        <p id="r2_p-wordsToFind">There is the words to find :</p>
-        <table id="r2_words-to-memorize"></table> <!-- array with all the words to memorize -->
+    <div id="r2_seeTheResults">
+        <p>The words you found :</p>
+        <table class="r2_userTable"></table>
+        <p>There is the words to find :</p>
+        <table class="r2_arrayToMemorize"></table> 
         <p id="r2_result"></p> <!-- displays the result of the game -->
     </div>
 
-    <form id="r2_round3" method="post" action="../index.php?controller=rounds&action=round2">
+    <form id="r2_nextRound" method="post" action="../index.php?controller=rounds&action=round2">
         <input type="hidden" name="r2_wordsNb" id="r2_wordsNb">
         <input type="hidden" name="r2_timeSpent" id="r2_timeSpent">
         <input type="submit" value="Next Round">

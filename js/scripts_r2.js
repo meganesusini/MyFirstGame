@@ -1,10 +1,10 @@
-// ROUND2 FUNCTIONS
+//after > array (10) which generate random words
 let userWordsArray = new Array();
-let wordsArray = ["apple", "banana", "cherry", "orange", "pear", "grape", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
-
+let arrayToMemorize = ["apple", "banana", "watermelon", "pineapple", "mango", "peach", "plum", "kiwi", "strawberry", "blueberry"];
+//
 let littleTimer = document.getElementById("r2_little_timer");
-let inputUserWord = document.getElementById("r2_input-user-word");
-let displayUserWord = document.getElementById("r2_display-user-word");
+let inputUserWord = document.getElementById("r2_inputUserWord");
+let displayUserWord = document.getElementById("r2_displayUserWord");
 let timer = document.getElementById("r2_timer");
 
 let wordsFoundNb = 0;
@@ -14,26 +14,33 @@ let countdownInterval, countdownDuration;
 // displays the timer and the array with the words to memorize
 function readyButton() 
 {
-    document.getElementById("readyButton").style.display = "none";
+    document.getElementById("r2_readyButton").style.display = "none";
     displayLittleTimer();
-    displayTable("r2_tableId");
-    // inputUserWord.focus();
+    displayTables("r2_arrayToMemorize");
 }
 
 // displays array with all the words to memorize and remove html elements
 function terminateButton()
 {
-    displayTable("r2_words-to-memorize");
-    document.getElementById("r2_timeUp1").style.display="none";
-    document.getElementById("r2_timeUp2").style.display="none";
-    document.getElementById("r2_round3").style.display="block";
     stopTimer();
+
+    // display the tables
+    displayTables("r2_arrayToMemorize");
+    displayTables("r2_userTable");
+    document.getElementById("r2_writeTheWords").style.display="none";
+    document.getElementById("r2_seeTheResults").style.display="block";
+
+    document.getElementById("r2_nextRound").style.display="block";
+    
+    // send the data
     document.getElementById("r2_wordsNb").value = gameResult();
     document.getElementById("r2_timeSpent").value = 60 - countdownDuration;
 }
 
 function displayLittleTimer() 
 {
+    document.getElementById("r2_memorizeIn10Seconds").style.display = "block"; // displays timer + table to memorize
+
     let secondsLeft = 10;
     littleTimer.textContent = 10;
     let countdown = setInterval(function() {
@@ -41,8 +48,9 @@ function displayLittleTimer()
         littleTimer.textContent = secondsLeft;
         if (secondsLeft <= 0) {
             clearInterval(countdown);
-            document.getElementById("r2_timeUp").style.display="block"; // if timer = 0 -> display div
-            document.getElementById("r2_ready").style.display="none"; // if timer = 0 -> remove div
+            document.getElementById("r2_memorizeIn10Seconds").style.display="none"; // if timer = 0 -> remove div
+            document.getElementById("r2_writeTheWords").style.display="block"; // if timer = 0 -> display div
+
             displayTimer();
         }
     }, 1000);
@@ -98,34 +106,51 @@ function displayUserWords()
     {        
         // error if the user entered a word which was already entered before
         if (userWordsArray.includes(inputUserWord.value)) {
-            displayUserWord.textContent = "ERROR : You have already written this word.";
+            displayUserWord.textContent = "You have already written this word.";
         
         // displays an array with the words entered by the user
         } else {
             displayUserWord.textContent = inputUserWord.value;
             userWordsArray.push(inputUserWord.value);
-            displayTable("r2_userTable");
+            displayTables("r2_userTable");
         }
 
         inputUserWord.value = "";
         
     }
 }
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("r2_userTable").focus();
-  });
+
 // displays the array with the words entered by the user
 // or the array with all the words to memorize 
-function displayTable(tableId) 
+function displayTables(tableId)
 {
-    // create the user array
     let tableHtml = "<tr>";
-    if (tableId == "r2_userTable")
+
+    // displays the table with the words to memorize
+    if (tableId == "r2_arrayToMemorize")
     {
+        for (let i = 0; i < 10; i++) {
+            if (i == 5)
+            {
+                tableHtml += "</tr><tr><td>" + arrayToMemorize[i] + "</td>";    
+            }
+            else
+            {
+                tableHtml += "<td>" + arrayToMemorize[i] + "</td>";
+            }
+        }
+    }
+    
+    // displays the table with the words found by the user
+    else if (tableId == "r2_userTable")
+    {
+        // Array length configuration :
         let endArray;
-        if (userWordsArray.length % 7 != 0)
+        let arrayLengthModule5 = userWordsArray.length % 5;
+        // if the length of the user array is not a multiple of 5 > enlarge table 
+        if (arrayLengthModule5 != 0) 
         {
-            endArray = userWordsArray.length + (7 - (userWordsArray.length % 7));
+            endArray = userWordsArray.length + (5 - (arrayLengthModule5));
         }
         else
         {
@@ -133,7 +158,7 @@ function displayTable(tableId)
         }
         for (let i=0; i<endArray; i++)
         {
-            if (i % 7 === 0 && i != 0)
+            if (i % 5 === 0 && i != 0)
             {
                 tableHtml += "</tr><tr><td>" + userWordsArray[i] + "</td>";
             }
@@ -147,40 +172,12 @@ function displayTable(tableId)
             }
         }
     }
-    // create the array with all the words
-    else
-    {
-        for (let i = 0; i < 7; i++) {
-            tableHtml += "<td>" + wordsArray[i] + "</td>";
-        }
-        tableHtml += "</tr><tr>";
-        for (let i = 7; i < 14; i++) {
-            tableHtml += "<td>" + wordsArray[i] + "</td>";
-        }
 
-        // displays the sentence
-        if (tableId == "r2_words-to-memorize") 
-        {
-            document.getElementById("r2_p-wordsToFind").style.display="block";
-        }
-    }
-
-    // displays the array
     tableHtml += "</tr>";
-    document.getElementById(tableId).innerHTML = tableHtml;
-    if (tableId == "r2_userTable")
-    {
-        if (userWordsArray.length == 0)
-        {
-            document.getElementById(tableId).style.display = "none";   
-        }
-    }
+    
+    document.getElementsByClassName(tableId)[0].innerHTML = tableHtml;
+    document.getElementsByClassName(tableId)[1].innerHTML = tableHtml;
 
-    // displays the result of the game
-    if (tableId == "r2_words-to-memorize") 
-    {
-        gameResult();
-    }
 }
 
 // calculation of the score and return the result
@@ -201,7 +198,7 @@ function gameResult()
         {
             result = "You found 1 word !";
         }
-        else if (score == 14)
+        else if (score == 10)
         {
             result = "Great ! You found all the words !";
         }
