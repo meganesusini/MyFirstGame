@@ -25,10 +25,11 @@ class Round1DAO
     {
         $triesNb = $newRound1->getTriesNb();
         $timeSpent = $newRound1->getTimeSpent();
+        $found = $newRound1->getFound();
         $roundId = $newRound1->getRoundId();
 
-        $request = $this->getDb()->prepare("INSERT INTO Round1 (triesNb, timeSpent, idR) VALUES (?, ?, ?)");
-        $request->execute([$triesNb, $timeSpent, $roundId]);
+        $request = $this->getDb()->prepare("INSERT INTO Round1 (triesNb, timeSpent, found, idR) VALUES (?, ?, ?, ?)");
+        $request->execute([$triesNb, $timeSpent, $found, $roundId]);
     }
 
     // Select a round1

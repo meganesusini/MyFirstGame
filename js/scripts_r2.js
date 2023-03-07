@@ -84,6 +84,7 @@ inputUserWord.addEventListener('keydown', function(event)
 {
     if (event.key === 'Enter') 
     {
+        inputUserWord.value = inputUserWord.value.trim();
         if(inputUserWord.value.length != 0)
         {            
             // error if the user entered a word which was already entered before
@@ -104,6 +105,7 @@ inputUserWord.addEventListener('keydown', function(event)
 // onclick button > displays all the words 
 function displayUserWords()
 {
+    inputUserWord.value = inputUserWord.value.trim();
     if(inputUserWord.value.length != 0)
     {        
         // error if the user entered a word which was already entered before
@@ -129,25 +131,63 @@ function displayTable(tableId)
     let tableHtml = "<tr>";
     if (tableId == "r2_userTable")
     {
-        if (userWordsArray.length < 7)
+        let endArray;
+        if (userWordsArray.length % 7 != 0)
         {
-            for (let i = 0; i < userWordsArray.length; i++) 
+            endArray = userWordsArray.length + (7 - (userWordsArray.length % 7));
+        }
+        else
+        {
+            endArray = userWordsArray.length;
+        }
+        for (let i=0; i<endArray; i++)
+        {
+            if (i % 7 === 0 && i != 0)
+            {
+                tableHtml += "</tr><tr><td>" + userWordsArray[i] + "</td>";
+            }
+            else if (i >= userWordsArray.length)
+            {
+                tableHtml += "<td> </td>";
+            }
+            else
             {
                 tableHtml += "<td>" + userWordsArray[i] + "</td>";
             }
         }
-        else if (userWordsArray.length < 14)
-        {
-            for (let i = 0; i < 7; i++) 
-            {
-                tableHtml += "<td>" + userWordsArray[i] + "</td>";
-                tableHtml += "</tr><tr>";
-            }
-            for (let i = 7; i < userWordsArray.length; i++) 
-            {
-                tableHtml += "<td>" + userWordsArray[i] + "</td>";
-            }   
-        }
+        // if (userWordsArray.length < 7)
+        // {
+        //     for (let i = 0; i < 7; i++) 
+        //     {
+        //         if (i<userWordsArray.length)
+        //         {
+        //             tableHtml += "<td>" + userWordsArray[i] + "</td>";
+        //         }
+        //         else
+        //         {
+        //             tableHtml += "<td> </td>";
+        //         }
+        //     }
+        // }
+        // else if (userWordsArray.length < 14)
+        // {
+        //     for (let i = 0; i < 7; i++) 
+        //     {
+        //         tableHtml += "<td>" + userWordsArray[i] + "</td>";
+        //         tableHtml += "</tr><tr>";
+        //     }
+        //     for (let i = 7; i < 14; i++) 
+        //     {
+        //         if (i<userWordsArray.length)
+        //         {
+        //             tableHtml += "<td>" + userWordsArray[i] + "</td>";
+        //         }
+        //         else
+        //         {
+        //             tableHtml += "<td> </td>";
+        //         }
+        //     }   
+        // }
     }
     // create the array with all the words
     else

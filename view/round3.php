@@ -31,7 +31,7 @@ session_start();
 
     <div id="r3_user">
         <p>Your answer : </p>
-        <input type="text" id="r3_user-answer"> <!-- the user write his answer -->
+        <input type="text" id="r3_user-answer" autofocus> <!-- the user write his answer -->
         <!-- button which save the user answer, the calc result and the calculation -->
         <button onclick="calculate(document.getElementById('r3_calc').textContent, document.getElementById('r3_user-answer').value);">Submit</button>
         <p id="r3_error-msg"></p> <!-- displays an error msg if the user write an NaN -->

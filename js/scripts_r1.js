@@ -22,6 +22,7 @@ function findTheNb(userNb, nbToFind)
         stopTimer();
         document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
         document.getElementById("r1_triesNb").value = triesNb+1;
+        document.getElementById("r1_found").value = "yes";
         pTimer.style.display = "none";
         
     }
@@ -80,9 +81,10 @@ function timer()
         document.getElementById("r1_next").style.display="block";
 
         // stop the timer > save the time spent > save the nb of tries
-        document.getElementById("r1_triesNb").value = triesNb+1;
+        document.getElementById("r1_triesNb").value = triesNb;
         stopTimer();
         document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
+        document.getElementById("r1_found").value = "no";
     }
     }, 1000);
 }
