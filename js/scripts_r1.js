@@ -1,55 +1,93 @@
-// ROUND1 FUNCTIONS
-let spanClue = document.getElementById("r1_clue");
-let inputNb = document.getElementById("r1_nb");
-let divDelete = document.getElementById("r1_deleteAfter");
-let pTimer = document.getElementById("r1_timer");
+let spanClue = document.getElementById("r1_clue"); // span which displays "more" / "less"
+let inputNb = document.getElementById("r1_nb"); // input where the user enter a nb
+let guess_nb_part = document.getElementById("r1_guess_nb"); // part where the user guess the nb
+let pTimer = document.getElementById("r1_timer"); // displays timer
 
 const randomNb = Math.floor(Math.random() * 101); // generate a random number
 
-let triesNb = 0;
-let countdownInterval, countdownDuration;
+let triesNb = 0; // user tries nb
 
-// onclick button > displays if the user found the right number
+let countdownInterval; // function which displays the timer
+let countdownDuration; // total time of timer
+
+
+/* *********** FUNCTIONS ************ */
+
+
+// displays the game when the player is ready
+function readyButton()
+{
+    guess_nb_part.style.display = "block"; // displays the part where the user enter a nb
+    document.getElementById("r1_readyButton").style.display = "none"; // delete the button
+    timer(); // displays timer
+}
+
+
+// Displays if the user found the right number
 function findTheNb(userNb, nbToFind)
 {
-    inputNb.value = inputNb.value.trim();
-    if(inputNb.value.length != 0)
+    inputNb.value = inputNb.value.trim(); // delete all the spaces
+    if(inputNb.value.length != 0) // check if the user entered something
     {
-        if (!isNaN(inputNb.value))
+        if (!isNaN(inputNb.value)) // check if the user entered a nb
         {
             if (userNb == nbToFind) 
             {
-                spanClue.textContent = "You are right ! The number is " + nbToFind.toString();
-                divDelete.style.display="none";
-                document.getElementById("r1_next").style.display="block";
-
-                // stop the timer > save the time spent > save the nb of tries
                 stopTimer();
-                document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
-                document.getElementById("r1_triesNb").value = triesNb+1;
-                document.getElementById("r1_found").value = "yes";
-                pTimer.style.display = "none";
-                
+                function finishRound(wonOrNot)
+                {
+                    let tries, found;
+                    if (wonOrNot == true)
+                    {
+                        tries = triesNb+1;
+                        found = "yes";
+                    }
+                    else
+                    {
+                        tries = triesNb;
+                        found = "no";
+                    }
+
+                    pTimer.style.display = "none"; // delete the timer
+
+                    spanClue.textContent = "You are right ! The number is " + nbToFind.toString();
+
+                    // send the data
+                    document.getElementById("r1_timeSpent").value = 60 - countdownDuration; 
+                    document.getElementById("r1_triesNb").value = tries; 
+                    document.getElementById("r1_found").value = found; 
+                    
+                    // new display
+                    guess_nb_part.style.display="none"; // delete the part where the user enter a nb
+                    document.getElementById("r1_next").style.display="block"; // displays the part where the user can go to the next round
+                }
+                finishRound(true);
+
             }
+
             else if (userNb > nbToFind)
             {
                 spanClue.textContent = "less";
             }
+
             else
             {
                 spanClue.textContent = "more";
             }
+
             triesNb++;
         }
+
         else
         {
-            spanClue.textContent = "ERROR : You must enter a number."
+            spanClue.textContent = "You must enter a number."
         }
     }
+
     inputNb.value = "";
 }
 
-// keydown enter > displays if the user found the right number
+// Displays if the user found the right number
 inputNb.addEventListener('keydown', function(event) 
 {
     if (event.key === 'Enter') 
@@ -58,43 +96,39 @@ inputNb.addEventListener('keydown', function(event)
     }
 });
 
+
+// Displays the timer
 function timer()
 {
-    inputNb.focus();
+    inputNb.focus(); // autofocus on the input
+
     pTimer.textContent = "1:00";
+    
     // Define the countdown duration in seconds
     countdownDuration = 60;
 
-    // Definition of the function to display the countdown
-    function displayCountdown() {
-    const minutes = Math.floor(countdownDuration / 60);
-    const seconds = countdownDuration % 60;
-    pTimer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    // Function which displays the countdown
+    function displayCountdown() 
+    {
+        const minutes = Math.floor(countdownDuration / 60);
+        const seconds = countdownDuration % 60;
+        pTimer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 
     // Start the countdown every seconds
-    countdownInterval = setInterval(function() {
-    countdownDuration--;
+    countdownInterval = setInterval(function() 
+    {
+        countdownDuration--;
 
-    displayCountdown();
+        displayCountdown();
     
-    // Stop the countdown is the duration is reached
-    if (countdownDuration < 1) {
-        clearInterval(countdownInterval);
+        // Stop the countdown is the duration is reached
+        if (countdownDuration < 1) {
+            clearInterval(countdownInterval);
+            finishRound(false);
 
-        // delete deleteafter div
-        divDelete.style.display = "none";
-        pTimer.style.display = "none";
-        spanClue.textContent = "Oh no, you couldn't find the right number in time !";
-        divDelete.style.display="none";
-        document.getElementById("r1_next").style.display="block";
+        }
 
-        // stop the timer > save the time spent > save the nb of tries
-        document.getElementById("r1_triesNb").value = triesNb;
-        stopTimer();
-        document.getElementById("r1_timeSpent").value = 60 - countdownDuration;
-        document.getElementById("r1_found").value = "no";
-    }
     }, 1000);
 }
 
@@ -102,12 +136,3 @@ function stopTimer()
 {
     clearInterval(countdownInterval);
 }
-
-function readyButton()
-{
-    divDelete.style.display = "block";
-    document.getElementById("displayButton").style.display = "none";
-    timer();
-}
-
-// END ROUND1

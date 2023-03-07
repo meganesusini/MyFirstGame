@@ -62,6 +62,7 @@ class HomeController
             }
         }
     }
+    
     public function authentication() {
         $pseudo = $_POST['a-pseudo'];
         $password = $_POST['a-password'];
@@ -79,16 +80,9 @@ class HomeController
             else
             {
                 // Check if the password matches the pseudo
-                // if ($newPlayerDAO->matches($password, $pseudo) == false)
-                // {
-                //     echo "<script>document.getElementById('login-errormsg').textContent = \"Your password is not correct.\";</script>";
-                // }
                 $hashed_password = $newPlayerDAO->getPwdFromPlayer($pseudo)["password"];
-                $t = "test";
-                // echo "<script>document.getElementById('login-errormsg').textContent = " . $hashed_password . ";</script>";
                 if (password_verify($password, $hashed_password) == false)
                 {
-                    // echo password_verify($password, $hashed_password);
                     echo "<script>document.getElementById('login-errormsg').textContent = \"Your password is not correct.\";</script>";
                 }
                 // If the 2 conditions = ok

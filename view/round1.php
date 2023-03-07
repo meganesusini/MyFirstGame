@@ -29,13 +29,15 @@ session_start();
     <p>GUESS A NUMBER</p>
     <p>The number to guess is between 0 and 100 included</p>
 
-    <div id="displayButton">
+    <div id="r1_readyButton">
         <p>You have 1 minute, are you ready ?</p>
         <button onclick="readyButton();">Ready</button> <!-- start a timer (1min) -->
     </div>
+
     <p id="r1_timer"></p>
 
-    <div id="r1_deleteAfter">
+    <!-- part where the user can guess the nb -->
+    <div id="r1_guess_nb">
         <input type="text" autofocus id="r1_nb" maxlength="3">
         <!-- onclick button > displays if the user found the right number -->
         <button onclick="findTheNb(document.getElementById('r1_nb').value, randomNb)">Enter</button>
@@ -51,7 +53,6 @@ session_start();
         <input type="hidden" name="r1_found" id="r1_found">
         <input type="submit" value="Next Round">
     </form>
-
 
     <script src="../js/scripts_r1.js"></script>
  </body>
