@@ -30,11 +30,8 @@ function terminateButton()
     document.getElementById("r2_writeTheWords").style.display="none";
     document.getElementById("r2_seeTheResults").style.display="block";
 
+    gameResult();
     document.getElementById("r2_nextRound").style.display="block";
-    
-    // send the data
-    document.getElementById("r2_wordsNb").value = gameResult();
-    document.getElementById("r2_timeSpent").value = 60 - countdownDuration;
 }
 
 function displayLittleTimer() 
@@ -187,7 +184,7 @@ function gameResult()
     let result;
     for (let i=0; i<userWordsArray.length; i++)
     {
-        if (wordsArray.includes(userWordsArray[i]))
+        if (arrayToMemorize.includes(userWordsArray[i]))
         {
             score++;
         }
@@ -211,15 +208,13 @@ function gameResult()
     {
         result = "Oh no ! You didn't find any words !";
     }
-    if (document.getElementById("r2_result").textContent == "")
-    {
-        document.getElementById("r2_result").textContent = result;
-    }
-    else
-    {
-        return score;
-    }
-
+    
+    document.getElementById("r2_result").textContent = result;
+    
+    // send the data
+    document.getElementById("r2_wordsNb").value = score;
+    document.getElementById("r2_timeSpent").value = 60 - countdownDuration;
+    
 }
 
 // END ROUND2

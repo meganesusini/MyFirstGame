@@ -52,8 +52,8 @@ session_start();
     </div>
 
     <form id="r2_nextRound" method="post" action="../index.php?controller=rounds&action=round2">
-        <input type="hidden" name="r2_wordsNb" id="r2_wordsNb">
-        <input type="hidden" name="r2_timeSpent" id="r2_timeSpent">
+        <input type="text" name="r2_wordsNb" id="r2_wordsNb">
+        <input type="text" name="r2_timeSpent" id="r2_timeSpent">
         <input type="submit" value="Next Round">
     </form>
 

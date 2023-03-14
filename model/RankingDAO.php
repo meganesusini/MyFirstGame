@@ -48,49 +48,115 @@ class RankingDAO
         return $request->fetchAll();
     }
 
-    // // Get all the rankings
-    // public function getAllRankings()
-    // {
-    //     $request = $this->getDb()->prepare("SELECT * FROM `Ranking` GROUP BY pseudo ORDER BY totalPoints DESC, totalTimes ASC; ");
-    //     $request->execute();
+    // Get all the players
+    public function getAllPlayers()
+    {
+        $request = $this->getDb()->prepare("SELECT DISTINCT pseudo FROM `Ranking`;");
+        $request->execute();
 
-    //     return $request->fetchAll();
-    // }
+        return $request->fetchAll();
+    }
 
     // Get the best player ranking
     public function getBestPlayerRanking()
     {
-        $request = $this->getDb()->prepare("SELECT pseudo, totalTimes, totalPoints FROM `Ranking` GROUP BY pseudo ORDER BY totalPoints DESC, totalTimes ASC;");
-        $request->execute();
+        // get all the players from the ranking
+        $playersArray = $this->getAllPlayers();
 
-        return $request->fetchAll();
+        // get the best game from each player and stock it in an array
+        $bestPlayerGameArray = array();
+        for ($i=0; $i<count($playersArray); $i++)
+        {
+            $request = $this->getDb()->prepare("SELECT pseudo, totalTimes, totalPoints FROM `Ranking` WHERE pseudo = '" . $playersArray[$i]["pseudo"] . "' ORDER BY totalPoints DESC, totalTimes ASC;");
+            $request->execute();
+            array_push($bestPlayerGameArray, $request->fetchAll()[0]);
+        }
+
+        // sort the array order by totalPoints DESC and totalTimes ASC
+        array_multisort(
+            array_column($bestPlayerGameArray, 'totalPoints'), SORT_DESC,
+            array_column($bestPlayerGameArray, 'totalTimes'), SORT_ASC, 
+            $bestPlayerGameArray
+        );
+        
+        return $bestPlayerGameArray;
     }
 
     // Get the round1 ranking
     public function getRound1Ranking()
     {
-        $request = $this->getDb()->prepare("SELECT pseudo, r1_time, r1_tries, r1_found FROM `Ranking` GROUP BY pseudo ORDER BY r1_found DESC, r1_time ASC, r1_tries ASC;");
-        $request->execute();
+        // get all the players from the ranking
+        $playersArray = $this->getAllPlayers();
 
-        return $request->fetchAll();
+        // get the best game from each player and stock it in an array
+        $bestPlayerRound1Array = array();
+        for ($i=0; $i<count($playersArray); $i++)
+        {
+            $request = $this->getDb()->prepare("SELECT pseudo, r1_time, r1_tries, r1_found FROM `Ranking` WHERE pseudo = '" . $playersArray[$i]["pseudo"] . "' ORDER BY r1_found DESC, r1_time ASC, r1_tries ASC;");
+            $request->execute();
+            array_push($bestPlayerRound1Array, $request->fetchAll()[0]);
+        }
+
+        // sort the array order by r1_found DESC, r1_time ASC and r1_tries ASC
+        array_multisort(
+            array_column($bestPlayerRound1Array, 'r1_found'), SORT_DESC,
+            array_column($bestPlayerRound1Array, 'r1_time'), SORT_ASC, 
+            array_column($bestPlayerRound1Array, 'r1_tries'), SORT_ASC, 
+            $bestPlayerRound1Array
+        );
+
+        return $bestPlayerRound1Array;
+
     }
 
     // Get the round2 ranking
     public function getRound2Ranking()
     {
-        $request = $this->getDb()->prepare("SELECT pseudo, r2_time, r2_wordsFound FROM `Ranking` GROUP BY pseudo ORDER BY r2_wordsFound DESC, r2_time ASC;");
-        $request->execute();
+        // get all the players from the ranking
+        $playersArray = $this->getAllPlayers();
 
-        return $request->fetchAll();
+        // get the best game from each player and stock it in an array
+        $bestPlayerRound2Array = array();
+        for ($i=0; $i<count($playersArray); $i++)
+        {
+            $request = $this->getDb()->prepare("SELECT pseudo, r2_time, r2_wordsFound FROM `Ranking` WHERE pseudo = '" . $playersArray[$i]["pseudo"] . "' ORDER BY r2_wordsFound DESC, r2_time ASC;");
+            $request->execute();
+            array_push($bestPlayerRound2Array, $request->fetchAll()[0]);
+        }
+
+        // sort the array order by r2_wordsFound DESC and r2_time ASC
+        array_multisort(
+            array_column($bestPlayerRound2Array, 'r2_wordsFound'), SORT_DESC,
+            array_column($bestPlayerRound2Array, 'r2_time'), SORT_ASC, 
+            $bestPlayerRound2Array
+        );
+
+        return $bestPlayerRound2Array;
     }
 
     // Get the round3 ranking
     public function getRound3Ranking()
     {
-        $request = $this->getDb()->prepare("SELECT pseudo, r3_time, r3_rightAnswers FROM `Ranking` GROUP BY pseudo ORDER BY r3_rightAnswers DESC, r3_time ASC;");
-        $request->execute();
+        // get all the players from the ranking
+        $playersArray = $this->getAllPlayers();
 
-        return $request->fetchAll();
+        // get the best game from each player and stock it in an array
+        $bestPlayerRound3Array = array();
+        for ($i=0; $i<count($playersArray); $i++)
+        {
+            $request = $this->getDb()->prepare("SELECT pseudo, r3_time, r3_rightAnswers FROM `Ranking` WHERE pseudo = '" . $playersArray[$i]["pseudo"] . "' ORDER BY r3_rightAnswers DESC, r3_time ASC;");
+            $request->execute();
+            array_push($bestPlayerRound3Array, $request->fetchAll()[0]);
+        }
+
+        // sort the array order by r3_rightAnswers DESC and r3_time ASC
+        array_multisort(
+            array_column($bestPlayerRound3Array, 'r3_rightAnswers'), SORT_DESC,
+            array_column($bestPlayerRound3Array, 'r3_time'), SORT_ASC, 
+            $bestPlayerRound3Array
+        );
+
+        return $bestPlayerRound3Array;
     }
 
     // // Select the last round id
